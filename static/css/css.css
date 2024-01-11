@@ -1,0 +1,96 @@
+@font-face{
+    src:url(/static/fonts/EBGaramond-VariableFont_wght.ttf) format('truetype');font-family:garamond;}
+  @font-face{
+    src:url(/static/fonts/Lexend-VariableFont_wght.ttf) format('truetype');font-family:lexend;}
+@font-face {
+    font-family: 'oswald';
+    src: url('/static/fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+
+    }
+
+body{
+    background-color:  #fff;
+}
+ @keyframes focus{
+    from{box-shadow:0px 0px 100px rgba(0, 0, 0, 0.625);}
+    50%{transform:translateY(-10px)}
+ }
+ @keyframes start{
+    from{box-shadow:0px 0px 50px rgba(0, 0, 0, 0.625);}
+    from{transform:translateY(-8px)}
+ }
+
+.box:hover{
+    animation-name: focus;
+    animation-duration: 0.3s;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.80);
+}
+.box:not(:hover){
+    animation-name: start;
+    animation-direction: normal;
+    animation-duration: 0.2s;
+    transform:translateY(8px)
+}
+.box p{
+    font-family:lexend;
+    font-size:25px;
+    margin-top:300px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    text-align:center;
+    padding:15px; margin-top:100px;
+    
+}
+#inside2{
+    font-family: oswald;
+    font-size:20px;
+    margin:10px;
+    border-radius: 10px;
+    text-align:center;
+    align-items: center;
+    justify-content: center;
+}
+#button{
+    font-family: lexend;
+    font-size:18px;
+    padding:4px;
+    border-radius: 4px;
+    cursor:pointer; 
+    background-color: #000000;
+    color:#f0f0f0;
+    border:none;
+    width:70px;
+    margin:15px;
+    height:35px;
+}
+#button:hover{
+    background-color:#ebebeb;
+    color:#000000;
+    border:2px solid;
+    padding:2px;
+}
+#inside1{
+    font-family:lexend;
+    font-size:25px;
+    margin:2px;
+    margin-top:30px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    text-align:center;
+    align-items: center;
+    justify-content: center;}
+  .box {
+    border: 2px rgb(155, 154, 154);
+    height: auto;
+    margin:auto;
+    border-radius: 10px;
+    width: 300px;
+    background-color: #ebebeb;
+    box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.625);
+    justify-content: center;
+    justify-self: center;
+    opacity:0.9;
+    margin-top:25vh;
+  }
+
+

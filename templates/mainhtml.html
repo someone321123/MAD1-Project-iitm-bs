@@ -1,0 +1,17 @@
+{% extends 'basehtml.html' %}
+{% block head %}
+<head><title>HAMEEDS-WEBPAGES</title></head>
+{% endblock %}
+{% block body %} <div id="outer">
+    <div class="box">
+        <p>Sign in  </p>
+        
+        <a id="inside2" href= " {{url_for('html2')}}">Welcome, Please Sign in<br><br></a>
+    <form>
+        <input id="inside2" placeholder="username"><br>
+        <input type="password" id="inside2" placeholder="password"><br>
+        <input type="submit" id="button"><input type="reset" id="button">
+    </form>
+    </div>
+    </div>
+{% endblock %}

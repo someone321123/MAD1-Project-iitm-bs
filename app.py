@@ -1,9 +1,15 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-FLASK_APP = "app.py"
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']=  'sqlite:///db'
+def create_app():
+  app = Flask(__name__)
+  app.config.from_object("project.config")
+  with app.app_context():
+      db.create_all()
+  return app
+app=Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI']=  'sqlite:///data.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATION']=False
 db = SQLAlchemy(app)
 
 class books(db.Model):

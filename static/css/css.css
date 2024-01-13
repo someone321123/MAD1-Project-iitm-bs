@@ -5,92 +5,97 @@
 @font-face {
     font-family: 'oswald';
     src: url('/static/fonts/Oswald-VariableFont_wght.ttf') format('truetype');
-
-    }
-
+}
 body{
-    background-color:  #fff;
+    margin: 0px;
+    background-color:  #131212;
 }
  @keyframes focus{
-    from{box-shadow:0px 0px 100px rgba(0, 0, 0, 0.625);}
+    from{box-shadow:0px 0px 100px rgba(255, 255, 255, 0.625);}
     50%{transform:translateY(-10px)}
  }
- @keyframes start{
-    from{box-shadow:0px 0px 50px rgba(0, 0, 0, 0.625);}
+ @keyframes focus-out{
+    from{box-shadow:0px 0px 50px rgba(255, 255, 255, 0.625);}
     from{transform:translateY(-8px)}
  }
 
 .box:hover{
     animation-name: focus;
     animation-duration: 0.3s;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.80);
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
 }
 .box:not(:hover){
-    animation-name: start;
-    animation-direction: normal;
+    animation-name: focus-out;
     animation-duration: 0.2s;
-    transform:translateY(8px)
+    transform:translateY(8px);
 }
-.box p{
-    font-family:lexend;
-    font-size:25px;
-    margin-top:300px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    text-align:center;
-    padding:15px; margin-top:100px;
-    
+.box{
+    height:300px;
+    float: right;
+    width: 300px;
+    margin:15px;
+    border-radius: 20px;
 }
-#inside2{
+
+.ib{
     font-family: oswald;
+    width:250px;
     font-size:20px;
-    margin:10px;
-    border-radius: 10px;
-    text-align:center;
-    align-items: center;
-    justify-content: center;
+    padding:8px;
+    border-radius: 8px;
+    cursor:pointer; 
+    background-color: #ffffff;
+    color:#000000;
+    margin:4px 15px;
+    height:auto;
 }
-#button{
+.ibb{
     font-family: lexend;
+    width:100px;
     font-size:18px;
     padding:4px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor:pointer; 
-    background-color: #000000;
-    color:#f0f0f0;
-    border:none;
-    width:70px;
-    margin:15px;
-    height:35px;
-}
-#button:hover{
-    background-color:#ebebeb;
+    background-color: #ffffff;
     color:#000000;
-    border:2px solid;
+    border:2px solid rgb(255, 255, 255);
+    margin:15px;
+    height:35px;}
+
+a{  font-family: lexend;
+    font-size:25px;
+    border-radius: 20px;
+
+    background-color: #000080;
+    color:#ffffff;
+    text-decoration: none;
+    padding:2px 5px;
+}
+.ibb:hover{
+    background-color:#000000;
+    color:#ffffff;
+    border:2px solid rgb(255, 255, 255);
     padding:2px;
 }
-#inside1{
+.bigt{
+    color: #ffffff;
     font-family:lexend;
-    font-size:25px;
-    margin:2px;
-    margin-top:30px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    text-align:center;
-    align-items: center;
-    justify-content: center;}
-  .box {
-    border: 2px rgb(155, 154, 154);
+    font-size:50px;
+    margin: 15px 15px;
+    text-align:left;
+    display: inline-block;}
+.smlt{
+    color: #ffffff;
+    font-family: oswald;
+    font-size:18px;
+    margin: 2px 15px;
+    }
+.ltbu {
     height: auto;
-    margin:auto;
-    border-radius: 10px;
     width: 300px;
-    background-color: #ebebeb;
-    box-shadow: 0px 0px 100px rgba(0, 0, 0, 0.625);
-    justify-content: center;
-    justify-self: center;
-    opacity:0.9;
-    margin-top:25vh;
-  }
+    margin-top:250px;
+    float: left;
+}
+
 
 

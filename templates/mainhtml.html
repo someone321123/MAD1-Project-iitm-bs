@@ -1,17 +1,24 @@
 {% extends 'basehtml.html' %}
 {% block head %}
-<head><title>HAMEEDS-WEBPAGES</title></head>
+<head><title>MindOfBooks</title></head>
 {% endblock %}
-{% block body %} <div id="outer">
-    <div class="box">
-        <p>Sign in  </p>
-        
-        <a id="inside2" href= " {{url_for('html2')}}">Welcome, Please Sign in<br><br></a>
+{% block body %} 
+<div style="background-color: black ;" >
+    <p class = "bigt">MindOfBooks</p>
+    <a href="" class="smlt" style="float:right">Librarian Login</a>
+</div>
+<div class="ltbu">
+    <p class="bigt">Log In  </p>
+    <p class="smlt">Welcome, to MindOfBooks please Log In,</p>
+    <a href="" class="smlt" >New Here? register Now! </a>
     <form>
-        <input id="inside2" placeholder="username"><br>
-        <input type="password" id="inside2" placeholder="password"><br>
-        <input type="submit" id="button"><input type="reset" id="button">
+        <input class="ib" placeholder="Your Username"><br>
+        <input type="password" class="ib" placeholder="Enter Password"><br>
+        <input type="submit" class="ibb">
     </form>
-    </div>
-    </div>
+</div>
+<div ><img class="box" src="https://images.unsplash.com/photo-1599493782407-2fe53235d2c8?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <img class="box" src="https://images.unsplash.com/photo-1620387510136-82f3bd6d39d3?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxhY2slMjBhbmQlMjB3aGl0ZSUyMGJvb2tzfGVufDB8fDB8fHww">
+</div>
+
 {% endblock %}

@@ -1,6 +1,8 @@
-from flask import Flask, render_template
+# this repo is updated
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+app.config['SQLALCHEMY_TRACK_MODIFICATION']=False
 def create_app():
   app = Flask(__name__)
   app.config.from_object("project.config")

@@ -1,24 +1,32 @@
-{% extends 'basehtml.html' %}
-{% block head %}
-<head><title>MindOfBooks</title></head>
-{% endblock %}
-{% block body %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/css.css')}}">
+<title>MindOfBooks</title>
+
+<body  style="   margin: 0px;
+background-color:  #000000;">
 <div style="background-color: black ;" >
     <p class = "bigt">MindOfBooks</p>
-    <a href="" class="smlt" style="float:right">Librarian Login</a>
+    <a href="liblog.html" class="smlt anc" style="float:right">Librarian Login</a>
 </div>
 <div class="ltbu">
     <p class="bigt">Log In  </p>
     <p class="smlt">Welcome, to MindOfBooks please Log In,</p>
-    <a href="" class="smlt" >New Here? register Now! </a>
+    
     <form>
         <input class="ib" placeholder="Your Username"><br>
         <input type="password" class="ib" placeholder="Enter Password"><br>
         <input type="submit" class="ibb">
-    </form>
+        <input type="submit" class="ibb" id="register">
+    </form><br>
+    <a href="/home" class="smlt anc">pass by</a>
 </div>
 <div ><img class="box" src="https://images.unsplash.com/photo-1599493782407-2fe53235d2c8?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
     <img class="box" src="https://images.unsplash.com/photo-1620387510136-82f3bd6d39d3?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxhY2slMjBhbmQlMjB3aGl0ZSUyMGJvb2tzfGVufDB8fDB8fHww">
 </div>
 
-{% endblock %}
+</body>
+</html>

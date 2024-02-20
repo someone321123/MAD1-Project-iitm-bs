@@ -1,0 +1,45 @@
+{% extends 'userbase.html' %}
+{% block main %}
+<form action="" method="POST" style="display: inline-block;">
+    <label for="filter">filter by</label>
+    <select id="filter">
+        <option value="author">Author</option>
+        <option value="rating">Rating</option>
+        <option value="name">Name</option>
+    </select>
+    <input type="text" placeholder="Search" style="display: inline-block;">
+</form>
+<hr>
+<div class="container my-3">
+    <h2>books</h2>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        
+                        <th scope="col">title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">buttons</th>
+                      </tr>
+                    </thead>
+                    
+                    <tbody>
+          <tr>
+          
+            <td>Title</td>
+            <td>Author</td>
+            <td>Rating</td>
+            <td>description</td>
+            <td>
+              <a href="/book" type="button" class="btn btn-outline-dark btn-sm mx-1">GO</a></button>
+             
+            
+            </td>
+          </tr>
+
+        </table>
+            
+</div>
+
+{% endblock main %}

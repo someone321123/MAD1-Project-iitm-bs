@@ -1,0 +1,38 @@
+{% extends 'userbase.html' %}{% block main %}
+<div>
+    <h4>All categories</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Number of books</th>
+      <th scope="col">Date created</th>
+      <th scope="col">Description</th>
+      <th scope="col">buttons</th>
+    </tr>
+  </thead>
+                    
+  <tbody>
+
+    <tr>
+      <td>Name</td>
+      <td>Zero</td>
+      <td>Date</td>
+      <td>Description here</td>
+      <td>
+        <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">DETAILS</a></button>
+        
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+<a href="#" >request</a>
+<a href="#" >buy as pdf</a>
+<a href="#" >return</a>
+<a href="/read">read</a>
+<form action="" method="post"><label for="rate">Rate the book</label>
+<input type="number" max="5" min="0" name="rate">
+</form>
+{% endblock main %}

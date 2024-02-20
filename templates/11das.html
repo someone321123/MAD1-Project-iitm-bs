@@ -1,0 +1,56 @@
+{% extends 'librbase.html' %}{% block body %}
+<h4>Pending Requsets</h4>
+<div class="container my-3">
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">User ID</th>
+        <th scope="col">User Name</th>
+        <th scope="col">Book</th>
+        <th scope="col">Book ID</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+  <tr>
+    <td>Index</td>
+    <td>id</td>
+    <td>name</td>
+    <td>book id</td>
+    <td>book</td>
+    <td>
+      <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">GO</a></button>
+    </td>
+  </tr>
+</table>              
+</div>
+<h4>Register History</h4>
+<div class="container my-3">
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Index</th>
+          <th scope="col">Book</th>
+          <th scope="col">User</th>
+          <th scope="col">Grant Date</th>
+          <th scope="col">Return Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+    <tr>
+      <td>index</td>
+      <td>book</td>
+      <td>user</td>
+      <td>date d</td>
+      <td>date r</td>
+      <td>revoked</td>
+      <td>
+        <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">GO</a></button>
+      </td>
+    </tr>
+  </table>              
+  </div>
+{% endblock body %}

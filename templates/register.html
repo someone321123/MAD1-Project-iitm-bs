@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/css.css')}}">
+<title>Influenza</title>
+
+<body  style="   margin: 0px;
+background-color:  #000000;">
+<div style="background-color: black ;" >
+    <p class = "bigt">Influenza</p>
+
+</div>
+<div class="ltbu">
+    <p class="bigt">Register Now!! </p>
+    <p class="smlt">Welcome, to Influenza please Register,</p>
+    <p class="smlt">Already a user? Please <a href="/login" class="anc smlt">Login Here</a> </p>
+ 
+    <form action="/" method="POST">
+        <input class="ib" name="name" placeholder="Your Username"><br>
+        <input type="password" name="password" class="ib" placeholder="Enter Password"><br>
+        <label for="" class="smlt">Are you an Influencer or a Sponser?</label><br>
+        <input type="radio" class="smlt" name="role" id=" spn" value="spn"  ><label for="spn" class="smlt">Sponser</label>
+        <input type="radio" class="smlt" name="role" id=" inf" value= 'inf' ><label for="inf" class="smlt">Influencer</label><br>
+        <input type="submit" class="ibb" value="Submit"><br>
+    </form><br>
+</div>
+<!--<div ><img class="box" src="https://images.unsplash.com/photo-1599493782407-2fe53235d2c8?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+    <img class="box" src="https://images.unsplash.com/photo-1620387510136-82f3bd6d39d3?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmxhY2slMjBhbmQlMjB3aGl0ZSUyMGJvb2tzfGVufDB8fDB8fHww">
+</div>-->
+
+</body>
+</html>

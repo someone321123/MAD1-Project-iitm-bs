@@ -1,14 +1,52 @@
-# this repo is updated in vs code
-from flask import Flask, render_template, request, redirect
+# login flask jwt, flask api
+from flask import Flask, render_template, request, redirect,jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_restful import Resource,Api
+from flask_jwt_extended import create_access_token, JWTManager , get_jwt_identity ,jwt_required
 from datetime import datetime
+
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']=  'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATION']=False
+app.config['SECRET_KEY'] = 'hush-secret'
 db = SQLAlchemy(app)
+api = Api(app)
+jwt = JWTManager(app)
 app.app_context().push()
+class SponserRegistration(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data['username']
+        password = data['password']
+        if not username or not password:
+            return {'message':'Missing information'}, 400
+        if User.query.filter_by(username = username).first():
+            return{'message':'choose other one'}, 400
+        new = User(username = username, password = password)
+        db.session.add(new)
+        db.session.commit()
+        return {'message':'Done'} ,200
+class SponserLogin(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data['username']
+        password = data['password']
+        user = User.query.filter_by(username= username).first()
+        if user and user.password == password:
+            access_token = create_access_token(identity = user.id)
+            return {'access_token': access_token}, 400
+        return {'message': 'invalid'}, 401
+api.add_resource(SponserRegistration,'/register')
+api.add_resource(SponserLogin,'/register')
 
-N=100000  #time for revoking access automatically
+class ProtectedResource(Resource):
+    @jwt_required() #validates the token availability
+    def get(self):
+        current_user =id.get_jwt_identity()
+        return {'message':"SUCCESS"} , 200
+
+#HERE
+
 
 class book(db.Model):
     __tablename__= 'book'
@@ -53,28 +91,57 @@ class register(db.Model):
     Rating=db.Column(db.Integer,default=None)
     Comment=db.Column(db.String(1000),default=None)
 db.create_all()
-@app.route('/')
-def mainhtml():
-    return render_template('mainhtml.html')
+
+
+users(Name='Admin',Password= 'admin@123',Role= 'Admin')
+@app.route('/', methods=['GET', 'POST'])
+def register():
+    if request.method=='POST':
+        name = request.form['name']
+        password = request.form['password']
+        role = request.form['role']
+        user=users(Name=name,Role='user', Password=password)
+
+        if users.query.filter_by(Name=name).first() is None:
+            user=users(Name=name,Password=password, Role=role)
+            db.session.add(user)
+            db.session.commit()
+            return render_template('login.html')
+        else:
+            return render_template('error.html')
+
+    else:
+        return render_template('register.html')
+
 
 @app.route('/home')
+#@jwt_required()
 def html2():
     return render_template('2hom.html')
 
 @app.route('/book')
+#@jwt_required()
 def main():
     return render_template('1buk.html')
-@app.route('/account')
-def register():
-    return render_template('5usp.html')
 
-@app.route('/liblog.html')
-def liblog():
-    return render_template('liblog.html')
 
-@app.route('/categories')
-def cat():
-    return render_template('3cat.html')
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method=='POST':
+        name = request.form['name']
+        password = request.form['password']
+        try:
+            if name == users.query.filter_by(Name=name,Password=password).first().Name and password == users.query.filter_by(Name=name,Password=password).first().Password:
+                access_token = create_access_token(identity=users.query.filter_by(Name=name,Password=password).first().ID)
+                return redirect('/infh')
+        except:
+            return render_template('error.html')
+    return render_template('login.html')
+
+@app.route('/infh')
+@jwt_required
+def infh():
+    return render_template('infh.html')
 
 @app.route('/search')
 def search():

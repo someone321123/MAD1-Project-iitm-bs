@@ -28,7 +28,7 @@
 }
 .box{
     height:300px;
-    float: right;
+    float: bottom;
     width: 300px;
     margin:15px;
     border-radius: 20px;
@@ -89,8 +89,8 @@
     }
 .ltbu {
     height: auto;
-    width: 300px;
-    margin-top:250px;
+    width: 500px;
+    margin-top:150px;
     float: left;
 }
 

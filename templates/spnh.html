@@ -1,15 +1,19 @@
-{% extends 'inf.html' %}{% block main %}
-all Campaigns
+{% extends 'spn.html' %}{% block main %}
+<!--tables
+maybe req, ads
+-->
+
+
+<a class="anc smlt" href="/new_camp/{{current_user}}">Create new Campaign</a>
 <div>
-    <h4>All Campaigns</h4>
+    <h4>All requests</h4>
 
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Index</th>
-      <th scope="col">Name</th>
+      <th scope="col">Influencer</th>
+      <th scope="col">Ad name</th>
       <th scope="col">Offer</th>
-      <th scope="col">Made on</th>
       <th scope="col">Duration</th>
       <th scope="col">Buttons</th>
     </tr>

@@ -1,0 +1,22 @@
+{% extends 'inf.html' %} {% block main %}
+  
+
+<!--class="container my-3"-->
+
+<h6>Make it!</h6>
+<form action="/new_camp/{{current_user}}" method="POST">
+    <label for="goal">goal:</label><br>
+    <input type="text" id="goal" name="goal" value="goal" required class="ib"><br>
+    <label for="deadline">deadline:</label><br>
+    <input type="datetime-local" class="ib" id="deadline" name="deadline" value="deadline"><br>
+    <label for="budget">budget:</label><br>
+    <input type="text" class="ib" id="budget" name="budget" value="budget"><br>
+    <label for="">Visibility of Campaign</label> <br>
+    <input type="radio" id ='public' name="visibs" value='public' required> <label for="public">public</label><br>
+    <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
+    <label for="desc">Description</label>
+    <textarea id="desc" name="desc" >Describe your campaign</textarea><br>
+    <input type="submit" value="Create">
+</form> 
+
+{% endblock main %}

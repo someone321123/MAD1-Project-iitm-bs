@@ -1,4 +1,7 @@
-{% extends 'inf.html' %}{% block body %}
+{% extends 'spn.html' %}{% block main %}
+<!--tables
+camps-->
+
 <div>
     <p>account details</p>
     <dl>
@@ -11,9 +14,14 @@
         <dt>Type of user</dt>
         <dd>{{users.query.filter_by(ID=current_user).first().Role}}</dd>
     </dl>
+</div>
+<p class="bigt-l">Your Campaigns</p> <br>
+{% for c in camps.query.filter_by(spn=current_user).all()%}
+{{c.ID}} <br>
+{{c.goal}} <br>
+{{c.desc}} <br> <br><br><br>
+{%endfor%}
+
     <a class="anc smlt" href="/delete/{{current_user}}">delete account</a>
     <a class="anc smlt" href="/">Make new account</a>
-
-
-</div>   
-{% endblock body %}
+{% endblock main %}

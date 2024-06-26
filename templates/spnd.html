@@ -1,0 +1,19 @@
+{% extends 'inf.html' %}{% block body %}
+<div>
+    <p>account details</p>
+    <dl>
+        <dt>ID</dt>
+        <dd>{{current_user}}</dd>
+        <dt>Name</dt>
+        <dd>{{users.query.filter_by(ID=current_user).first().Name}}</dd>
+        <dt>Date of joining</dt>
+        <dd>{{users.query.filter_by(ID=current_user).first().D_join}}</dd>
+        <dt>Type of user</dt>
+        <dd>{{users.query.filter_by(ID=current_user).first().Role}}</dd>
+    </dl>
+    <a class="anc smlt" href="/delete/{{current_user}}">delete account</a>
+    <a class="anc smlt" href="/">Make new account</a>
+
+
+</div>   
+{% endblock body %}

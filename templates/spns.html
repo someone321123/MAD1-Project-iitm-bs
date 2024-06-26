@@ -1,5 +1,5 @@
-{% extends 'userbase.html' %}
-{% block main %}
+{% extends 'inf.html' %}
+{% block body %}
 <form action="" method="POST" style="display: inline-block;">
     <label for="filter">filter by</label>
     <select id="filter">
@@ -11,7 +11,8 @@
 </form>
 <hr>
 <div class="container my-3">
-    <h2>books</h2>
+    <h4>books</h4>
+    <small><a href="#" type="button" >delete all</a></small>
                 <table class="table">
                   <thead>
                     <tr>
@@ -41,5 +42,15 @@
         </table>
             
 </div>
+<thead>
+  <tr>
+    <th scope="col">Index</th>
+    <th scope="col">Name</th>
+    <th scope="col">Number of books</th>
+    <th scope="col">Made on</th>
+    <th scope="col">Description</th>
+    <th scope="col">Buttons</th>
+  </tr>
+</thead>
 
-{% endblock main %}
+{% endblock body %}

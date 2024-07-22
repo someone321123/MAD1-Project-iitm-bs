@@ -12,8 +12,8 @@ app.app_context().push()
 
 class influs(db.Model):
     __tablename__= 'influs'
-    ID=db.Column(db.Integer,db.ForeignKey('users.ID'),primary_key=True )
-    Name=db.Column(db.String(200),nullable=False,default="no name assigned", unique=True) 
+    ID=db.Column(db.Integer,db.ForeignKey('users.ID'),primary_key=True)
+    Name=db.Column(db.String(200),nullable=False, unique=True) 
     niche=db.Column(db.String(200),default="no niche assigned" )
     folls=db.Column(db.Integer,default=0)
     #plats=db.Column(db.DateTime,default=datetime.utcnow)
@@ -91,16 +91,19 @@ def register():
         if users.query.filter_by(Name=name).first() is None:
             user=users(Name=name,Password=password, Role=role)
             db.session.add(user)
+            db.session.commit()
             if role=='inf':
-                inf= influs(Name=name,niche=name, bio='nothing here')
+                inf= influs( Name=name,ID=users.query.filter_by(Name=name).first().ID)
                 db.session.add(inf)
+                db.session.commit()
             elif role=='spn':
-                spn= spons(Name=name,niche=name, bio='nothing here')
+                spn= spons(Name=name, ID=users.query.filter_by(Name=name).first().ID)
+                db.session.add(spn)
+                db.session.commit()
 # add admin role
             else:
                 return render_template('error.html',message='Under Maintainance')
 
-            db.session.commit()
             return redirect('/login')
         else:
             return render_template('error.html',message='Username already exists')
@@ -137,7 +140,7 @@ def login():
 def infh(current_user):
     try:
         if users.query.filter_by(ID=current_user).first().Role=='inf':
-            return render_template('infh.html', current_user= current_user,users=users)
+            return render_template('infh.html', current_user= current_user,users=users,req=req,ads=ads)
         else:
             return render_template('error.html',message='this is not the page you are looking for')
     except:
@@ -164,7 +167,7 @@ def infd(current_user):
 def spnh(current_user):
     try:
         if users.query.filter_by(ID=current_user).first().Role=='spn':
-            return render_template('spnh.html', current_user= current_user,users=users)
+            return render_template('spnh.html', current_user= current_user,users=users,req=req,ads=ads)
         else:
             return render_template('error.html',message='this is not the page you are looking for')
     except:
@@ -300,7 +303,7 @@ def new_request(ad):
     return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user, new='req', ad=ad)
 
 #*****development settings*******
-current_user=1
+#current_user=1
 
 if __name__ == '__main__':
     app.run(debug=True)

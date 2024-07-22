@@ -1,37 +1,37 @@
 {% extends 'inf.html' %}{% block main %}
-all Campaigns
-<div>
-    <h4>All Campaigns</h4>
+
+
+{% if req.query.filter_by(target=current_user).all()|length > 0 %}
+    <h4>Requests for you</h4>
 
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Index</th>
-      <th scope="col">Name</th>
-      <th scope="col">Offer</th>
-      <th scope="col">Made on</th>
+      <th scope="col">Requestor</th>
+      <th scope="col">Ad name</th>
       <th scope="col">Duration</th>
+      <th scope="col">Campaign ID</th>
       <th scope="col">Buttons</th>
     </tr>
   </thead>
                     
   <tbody>
-
+{% for req in req.query.filter_by(target=current_user).all() %}
     <tr>
-      <td>Name</td>
-      <td>Zero</td>
-      <td>Date</td>
-      <td>Description here</td>
+      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().camps}}</td>
       <td>
         <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">DETAILS</a></button>
         
       </td>
     </tr>
-
+{% endfor %}
   </tbody>
 </table>
+{%elif req.query.filter_by(target=current_user).all()|length == 0 %}
+<h4>No requests for you</h4>
+{% endif %}
 
-            
-        
-</div>
 {% endblock main %}

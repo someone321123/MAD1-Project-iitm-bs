@@ -59,7 +59,8 @@ class spons(db.Model):
     
 class req(db.Model):
     __tablename__='req'
-    ID=db.Column(db.Integer,db.ForeignKey('ads.ID'), primary_key=True)
+    ID=db.Column(db.Integer, primary_key=True)
+    ad=db.Column(db.Integer,db.ForeignKey('ads.ID'))
     target=db.Column(db.Integer,db.ForeignKey('users.ID'))
     reqer=db.Column(db.Integer,db.ForeignKey('users.ID'))
     status=db.Column(db.String(50),default="Pending")
@@ -90,6 +91,15 @@ def register():
         if users.query.filter_by(Name=name).first() is None:
             user=users(Name=name,Password=password, Role=role)
             db.session.add(user)
+            if role=='inf':
+                inf= influs(Name=name,niche=name, bio='nothing here')
+                db.session.add(inf)
+            elif role=='spn':
+                spn= spons(Name=name,niche=name, bio='nothing here')
+# add admin role
+            else:
+                return render_template('error.html',message='Under Maintainance')
+
             db.session.commit()
             return redirect('/login')
         else:
@@ -181,15 +191,32 @@ def spnd(current_user):
 def delete(current_user):
     for camp in camps.query.filter_by(spn=current_user).all():
         for ad in ads.query.filter_by(camps=camp.ID).all():
+            req.query.filter_by(ad=ad.ID).delete()
             db.session.delete(ad)
         db.session.delete(camp)
+    if users.query.filter_by(ID=current_user).first().Role=='inf':
+        influs.query.filter_by(ID=current_user).delete()
+    elif users.query.filter_by(ID=current_user).first().Role=='spn':
+        spons.query.filter_by(ID=current_user).delete()
+    else:
+        return render_template('error.html',message='Under Maintainance')
     db.session.delete(users.query.filter_by(ID=current_user).first())
     db.session.commit()
     return redirect("/login")
 
 @app.route('/delete_ad/<int:ad>')
 def delete_ad(ad):
+    req.query.filter_by(ad=ad).delete()
     db.session.delete(ads.query.filter_by(ID=ad).first())
+    db.session.commit()
+    return redirect(f'/spnd/{current_user}')
+
+@app.route('/delete_camp/<int:camp>')
+def delete_camp(camp):
+    for i in ads.query.filter_by(camps=camp).all():
+        req.query.filter_by(ad=i.ID).delete()
+    ads.query.filter_by(camps=camp).delete()
+    camps.query.filter_by(ID=camp).delete()
     db.session.commit()
     return redirect(f'/spnd/{current_user}')
 
@@ -243,7 +270,37 @@ def new_ad(camp):
             return render_template('error.html', message=str(e))  # Handle other exceptions
     return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user, new='ad', camp=camp)
 
+@app.route('/new_request/<int:ad>', methods=['GET','POST'])
+def new_request(ad):
+    if request.method=='POST':
+        try:
+            target = request.form['target']
+            reqer=current_user
+            ad=request.form['ad']
+            if int(target)==reqer:
+                return render_template('error.html', message="You cant request yourself")
+            elif ads.query.filter_by(ID=ad).first() is None:
+                return render_template('error.html', message="This ad doesnt exist")
+            elif camps.query.filter_by(ID=ads.query.filter_by(ID=ad).first().camps).first().spn!=current_user:
+                return render_template('error.html', message="This ad is not yours")
+    
+            elif users.query.filter_by(ID=target).first() is None:
+                return render_template('error.html', message="This user doesnt exist")
+            else:
+                new_req = req(
+                    target=target,
+                    reqer=reqer,
+                    ad=ad,            )
+                db.session.add(new_req)
+                db.session.commit()
 
+                return redirect(f'/spnd/{current_user}')
+        except Exception as e:
+            return render_template('error.html', message=str(e))  # Handle other exceptions
+    return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user, new='req', ad=ad)
+
+#*****development settings*******
+current_user=1
 
 if __name__ == '__main__':
     app.run(debug=True)

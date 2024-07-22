@@ -34,6 +34,17 @@ here ad
     <input type="submit" value="Create">
 </form> 
 
+{% elif new=='req'%}
+here req
+<h6>Make a request</h6>
+<form action="/new_request/{{ad}}" method="POST">
+    <label for="target">User ID:</label><br>
+    <input type="text" id="target" name="target" value="target" required class="ib"><br>
+    <label for="ad">Ad ID:</label><br>
+    <input type="text" id="ad" name="ad" value="{{ad}}" required class="ib"><br>
+    <input type="submit" value="Create">
+</form>
+
 {% else %}
 here req
 {% endif %}

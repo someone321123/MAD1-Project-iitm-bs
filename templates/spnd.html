@@ -1,8 +1,8 @@
 {% extends 'spn.html' %}{% block main %}
 <!--tables
-camps-->
+camps,  ads-->
 
-    
+{{message}}
 
 <div class="ib">
     <p class="bigt-l" style="font-size: 25px;">account details</p>
@@ -19,21 +19,28 @@ camps-->
         <dd>{{users.query.filter_by(ID=current_user).first().Role}}</dd>
     </dl>
     <hr><hr>    <a class="anc smlt" href="/delete/{{current_user}}">delete account</a>
-    
 </div>
 <hr>
-<p class="bigt-l" style="font-size:25px;">Your Campaigns</p> <br>
+{%if camps.query.filter_by(spn=current_user).all()|length > 0%}
+<p class="bigt-l" style="font-size:27px;">Your Campaigns</p> <br> <hr><hr>
 {% for c in camps.query.filter_by(spn=current_user).all()%}
-{{c.ID}} <br>
-{{c.goal}} <br>
-{{c.desc}} <br>
-{{if ads.query.filter_by(camps=c.ID).all()|length > 0}}
+<div class="ib">
+<dl>
+    <dt>ID</dt>
+    <dd>{{c.ID}}</dd>
+    <dt>Goal</dt>
+    <dd>{{c.goal}}</dd>
+    <dt>Description</dt>
+    <dd>{{c.desc}}</dd>
+</dl> </div>
+{%if ads.query.filter_by(camps=c.ID).all()|length > 0%}
+<p class="bigt-l" style="font-size:20px;">Ads for {{c.goal}}</p>
 <table class="table">
     <thead>
       <tr>
         <th scope="col">Index</th>
         <th scope="col">Name</th>
-        <th scope="col">Button</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
       <tbody>
@@ -41,18 +48,18 @@ camps-->
 <tr>
 <td>{{loop.index}}</td>
 <td><p>{{ad.Name}}</p></td>
-<td>    <a class="anc smlt">Make request</a> <a class="anc smlt" href="/delete_ad/{{ad.ID}}">Delete</a></td>
+<td>    <a class="anc smlt" href="/new_request/{{ad.ID}}">Make request</a> <a class="anc smlt" href="/delete_ad/{{ad.ID}}">Delete</a></td>
 </tr>
         {% endfor %}
       </tbody>
 </table>
 {% endif %}
 
-  <br> <hr>
-<a class="anc smlt" href="/new_ad/{{c.ID}}">Create Ad</a> <br><br>
+  <br> 
+<a class="anc smlt" href="/new_ad/{{c.ID}}">Create Ad</a> <a class="anc smlt" href="/delete_camp/{{c.ID}}">Delete Campaign</a><br><br>
 <hr> <br> <br>
 {%endfor%}
-
+{% endif %}
 
 
 

@@ -1,7 +1,8 @@
-{% extends 'inf.html' %} {% block main %}
+{% extends 'spn.html' %} {% block main %}
   
 
 <!--class="container my-3"-->
+{% if new=='camp' %}
 
 <h6>Make it!</h6>
 <form action="/new_camp/{{current_user}}" method="POST">
@@ -18,5 +19,23 @@
     <textarea id="desc" name="desc" >Describe your campaign</textarea><br>
     <input type="submit" value="Create">
 </form> 
+{%elif new=='ad'%}
+here ad
+<h6>Make it!</h6>
+<form action="/new_ad/{{camp}}" method="POST">
+    <label for="Name">Name:</label><br>
+    <input type="text" id="Name" name="Name" value="Name" required class="ib"><br>
+    <label for="duration">duration :</label><br>
+    <input type="text" class="ib" id="dura" name="dura" value="duration"><br>
+    <label for="budget">budget:</label><br>
+    <input type="text" class="ib" id="budget" name="budget" value="budget"><br>
+    <label for="reqs">requirements</label>
+    <textarea id="reqs" name="reqs" >Describe your requirements</textarea><br>
+    <input type="submit" value="Create">
+</form> 
+
+{% else %}
+here req
+{% endif %}
 
 {% endblock main %}

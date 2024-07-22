@@ -14,10 +14,12 @@
 <body><style></style>
 <div style="flex:flow-root;">
 <h1 style=><a class="bigt-l" href="/spnh/{{current_user}}">Influenza</a></h1>
-<h6 style="display: inline-block;"><a class="anc smlt" href="/spns/{{current_user}}">All Campaigns</a>  <a class="anc smlt" href="/spns/{{current_user}}">search</a>
-<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}} ,<a class="anc smlt" href="/spnd/{{current_user}}">manage account</a></p>
-<a class="anc smlt" href="/login">Logout</a>
-</h6></div>
+<div>
+<h6 style="display: inline-block;"><a class="anc smlt" href="/spns/{{current_user}}">Search Campaigns</a> 
+<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}} , youre a sponser <a class="anc smlt" href="/spnd/{{current_user}}">Your Account & Campaigns </a></p>
+<a class="anc smlt" href="/login">Logout</a></h6>
+</div>
+</div>
 {% block main %}
     
 {% endblock main %}

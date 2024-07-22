@@ -15,7 +15,7 @@
 <div style="flex:flow-root;">
 <h1 style=><a class="bigt-l" href="/infh/{{current_user}}">Influenza</a></h1>
 <h6 style="display: inline-block;"><a class="anc smlt" href="/infs/{{current_user}}">All Campaigns</a>  <a class="anc smlt" href="/infs/{{current_user}}">search</a>
-<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}} ,<a class="anc smlt" href="/infd/{{current_user}}">manage account</a></p>
+<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}} , youre an influencer <a class="anc smlt" href="/infd/{{current_user}}">account</a></p>
 <a class="anc smlt" href="/login">Logout</a>
 </h6></div>
 {% block main %}

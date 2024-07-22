@@ -2,8 +2,12 @@
 <!--tables
 camps-->
 
-<div>
-    <p>account details</p>
+    
+
+<div class="ib">
+    <p class="bigt-l" style="font-size: 25px;">account details</p>
+    <hr>
+    <hr>
     <dl>
         <dt>ID</dt>
         <dd>{{current_user}}</dd>
@@ -14,14 +18,42 @@ camps-->
         <dt>Type of user</dt>
         <dd>{{users.query.filter_by(ID=current_user).first().Role}}</dd>
     </dl>
+    <hr><hr>    <a class="anc smlt" href="/delete/{{current_user}}">delete account</a>
+    
 </div>
-<p class="bigt-l">Your Campaigns</p> <br>
+<hr>
+<p class="bigt-l" style="font-size:25px;">Your Campaigns</p> <br>
 {% for c in camps.query.filter_by(spn=current_user).all()%}
 {{c.ID}} <br>
 {{c.goal}} <br>
-{{c.desc}} <br> <br><br><br>
+{{c.desc}} <br>
+{{if ads.query.filter_by(camps=c.ID).all()|length > 0}}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Name</th>
+        <th scope="col">Button</th>
+      </tr>
+    </thead>
+      <tbody>
+        {% for ad in ads.query.filter_by(camps=c.ID).all() %}
+<tr>
+<td>{{loop.index}}</td>
+<td><p>{{ad.Name}}</p></td>
+<td>    <a class="anc smlt">Make request</a> <a class="anc smlt" href="/delete_ad/{{ad.ID}}">Delete</a></td>
+</tr>
+        {% endfor %}
+      </tbody>
+</table>
+{% endif %}
+
+  <br> <hr>
+<a class="anc smlt" href="/new_ad/{{c.ID}}">Create Ad</a> <br><br>
+<hr> <br> <br>
 {%endfor%}
 
-    <a class="anc smlt" href="/delete/{{current_user}}">delete account</a>
-    <a class="anc smlt" href="/">Make new account</a>
+
+
+
 {% endblock main %}

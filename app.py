@@ -28,7 +28,7 @@ class camps(db.Model):
     goal=db.Column(db.String(2000),default="no goal assigned")
     D_start=db.Column(db.DateTime,default=datetime.utcnow)
     D_end=db.Column(db.DateTime,default=datetime.utcnow)
-    budget=db.Column(db.Integer, default = '100')
+    budget=db.Column(db.Integer, default = 100)
     visibs=db.Column(db.String(20),default='public')
     desc=db.Column(db.String(2000),default='no description given')
     spn=db.Column(db.Integer,db.ForeignKey('spons.ID'))
@@ -40,7 +40,7 @@ class ads(db.Model):
     ID=db.Column(db.Integer,primary_key=True)
     Name=db.Column(db.String(200),unique=True)
     reqs=db.Column(db.String(2000),default="no requirements assigned")
-    budget=db.Column(db.Integer, default = '100')
+    budget=db.Column(db.Integer, default = 100)
     dura=db.Column(db.String(100),default='Not given')
     camps=db.Column(db.Integer,db.ForeignKey('camps.ID'))
     def __repr__(self):
@@ -70,8 +70,8 @@ class req(db.Model):
 class users(db.Model):
     __tablename__='users'
     ID=db.Column(db.Integer,primary_key=True)
-    Name=db.Column(db.String(100),default="user")
-    Password=db.Column(db.String(15),default="0000")
+    Name=db.Column(db.String(100),unique=True)
+    Password=db.Column(db.String(15),nullable=False)
     D_join=db.Column(db.DateTime,default=datetime.utcnow)
     Role=db.Column(db.String(200),default="inf") 
     def __repr__(self):
@@ -172,16 +172,26 @@ def spns(current_user):
 def spnd(current_user):
     try:
         if users.query.filter_by(ID=current_user).first().Role=='spn':
-            return render_template('spnd.html',current_user=current_user,camps=camps, users=users)
+            return render_template('spnd.html',current_user=current_user,camps=camps, users=users,ads=ads)
         else:
             return render_template('error.html',message='this is not the page you are looking for')
     except:
         return render_template('error.html',message='this is not the page you are looking for')
 @app.route('/delete/<int:current_user>')
 def delete(current_user):
+    for camp in camps.query.filter_by(spn=current_user).all():
+        for ad in ads.query.filter_by(camps=camp.ID).all():
+            db.session.delete(ad)
+        db.session.delete(camp)
     db.session.delete(users.query.filter_by(ID=current_user).first())
     db.session.commit()
     return redirect("/login")
+
+@app.route('/delete_ad/<int:ad>')
+def delete_ad(ad):
+    db.session.delete(ads.query.filter_by(ID=ad).first())
+    db.session.commit()
+    return redirect(f'/spnd/{current_user}')
 
 @app.route('/new_camp/<int:current_user>', methods=['GET','POST'])
 def new_camp(current_user):
@@ -209,7 +219,29 @@ def new_camp(current_user):
             return redirect(f'/spnh/{current_user}')
         except Exception as e:
             return render_template('error.html', message=str(e))  # Handle other exceptions
-    return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user)
+    return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user, new='camp')
+
+@app.route('/new_ad/<int:camp>', methods=['GET','POST'])
+def new_ad(camp):
+    if request.method=='POST':
+        try:
+            Name = request.form['Name']
+            reqs = request.form['reqs']
+            budget = request.form['budget']
+            dura = request.form['dura']
+            new_ad = ads(
+                Name=Name,
+                reqs=reqs,
+                dura=dura,
+                budget=budget,
+                camps=camp,            )
+            db.session.add(new_ad)
+            db.session.commit()
+
+            return redirect(f'/spnd/{current_user}')
+        except Exception as e:
+            return render_template('error.html', message=str(e))  # Handle other exceptions
+    return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user, new='ad', camp=camp)
 
 
 

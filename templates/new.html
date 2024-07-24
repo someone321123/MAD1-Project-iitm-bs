@@ -5,6 +5,7 @@
 {% if new=='camp' %}
 
 <h6>Make it!</h6>
+<div class="ib">
 <form action="/new_camp/{{current_user}}" method="POST">
     <label for="goal">goal:</label><br>
     <input type="text" id="goal" name="goal" value="goal" required class="ib"><br>
@@ -19,9 +20,11 @@
     <textarea id="desc" name="desc" >Describe your campaign</textarea><br>
     <input type="submit" value="Create">
 </form> 
+</div>
 {%elif new=='ad'%}
 here ad
 <h6>Make it!</h6>
+<div class="ib">
 <form action="/new_ad/{{camp}}" method="POST">
     <label for="Name">Name:</label><br>
     <input type="text" id="Name" name="Name" value="Name" required class="ib"><br>
@@ -32,21 +35,68 @@ here ad
     <label for="reqs">requirements</label>
     <textarea id="reqs" name="reqs" >Describe your requirements</textarea><br>
     <input type="submit" value="Create">
-</form> 
+</form>     </div>
 
 {% elif new=='req'%}
 here req
 <h6>Make a request</h6>
+<div class="ib">
 <form action="/new_request/{{ad}}" method="POST">
     <label for="target">User ID:</label><br>
     <input type="text" id="target" name="target" value="target" required class="ib"><br>
     <label for="ad">Ad ID:</label><br>
     <input type="text" id="ad" name="ad" value="{{ad}}" required class="ib"><br>
     <input type="submit" value="Create">
+</form> </div>
+{%elif new=='update_camp'%}
+<h6>Update Campaign</h6>
+<div class="ib">
+<form action="/update_camp/{{camp}}" method="POST">
+    <label for="goal">goal:</label><br>
+    <input type="text" id="goal" name="goal" value="{{camps.query.filter_by(ID=camp).first().goal}}" required class="ib"><br>
+    <label for="deadline">deadline:</label><br>
+    <input type="datetime-local" class="ib" id="deadline" name="deadline" value="{{camps.query.filter_by(ID=camp).first().D_end}}"><br>
+    <label for="budget">budget:</label><br>
+    <input type="text" class="ib" id="budget" name="budget" value="{{camps.query.filter_by(ID=camp).first().budget}}"><br>
+    <label for="">Visibility of Campaign</label> <br>
+    <input type="radio" id ='public' name="visibs" value='public' required> <label for="public">public</label><br>
+    <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
+    <label for="desc">Description</label>
+    <textarea id="desc" name="desc" >{{camps.query.filter_by(ID=camp).first().desc}}</textarea><br>
+    <input type="submit" value="update">
+</form> </div>
+{%elif new=='update_ad'%}
+<h6>Update Ad</h6>
+<div class="ib">
+    <form action="/update_ad/{{ad}}" method="POST">
+    <label for="Name">Name:</label><br>
+    <input type="text" id="Name" name="Name" value="{{ads.query.filter_by(ID=ad).first().Name}}" required class="ib"><br>
+    <label for="duration">duration :</label><br>
+    <input type="text" class="ib" id="dura" name="dura" value="{{ads.query.filter_by(ID=ad).first().dura}}"><br>
+    <label for="budget">budget:</label><br>
+    <input type="text" class="ib" id="budget" name="budget" value="{{ads.query.filter_by(ID=ad).first().budget}}"><br>
+    <label for="reqs">requirements</label>
+    <textarea id="reqs" name="reqs" >{{ads.query.filter_by(ID=ad).first().reqs}}</textarea><br>
+    <input type="submit" value="update">
 </form>
-
+</div>
+{%elif new=='update_user'%}
+<h6>Update User</h6>
+<div class="ib">
+<form action="/update/{{current_user}}" method="POST">
+    <label for ="niche">niche:</label><br>
+    <input type="text" id="niche" name="niche" value="{{influs.query.filter_by(ID=current_user).first().niche}}" required class="ib"><br>
+    <label for="folls">followers:</label><br>
+    <input type="text" class="ib" id="folls" name="folls" value="{{influs.query.filter_by(ID=current_user).first().folls}}"><br>
+    <label for="plats">platforms:</label><br>
+    <input type="text" class="ib" id="plats" name="plats" value="{{influs.query.filter_by(ID=current_user).first().plats}}"><br>
+    <label for="bio">bio:</label><br>
+    <textarea id="bio" name="bio" >{{influs.query.filter_by(ID=current_user).first().bio}}</textarea><br>
+    <input type="submit" value="update">
+</form>
+</div>
 {% else %}
-here req
+value of new: {{new}}
 {% endif %}
 
 {% endblock main %}

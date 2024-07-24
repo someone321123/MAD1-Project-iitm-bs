@@ -1,37 +1,47 @@
 {% extends 'inf.html' %}{% block main %}
 
 
-{% if req.query.filter_by(target=current_user).all()|length > 0 %}
+{% if req.query.filter_by(target=current_user).all()|length > 0 && req.query.filter_by(status=PENDING).all()|length > 0 %}
     <h4>Requests for you</h4>
-
+<div class="container my-3">
 <table class="table">
   <thead>
     <tr>
       <th scope="col">Requestor</th>
       <th scope="col">Ad name</th>
       <th scope="col">Duration</th>
-      <th scope="col">Campaign ID</th>
-      <th scope="col">Buttons</th>
+      <th scope="col">Campaign</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
                     
-  <tbody>
+  <tbody> 
+
 {% for req in req.query.filter_by(target=current_user).all() %}
+{%if req.status=='PENDING'%}
     <tr>
       <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
       <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
       <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
-      <td>{{ads.query.filter_by(ID=req.ad).first().camps}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
       <td>
-        <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">DETAILS</a></button>
-        
+        <form action="/update_req/{{req.ID}}" method="POST" class="ib">
+          <input type="hidden" name="request_id" value="{{ req.ID }}">
+          <input type="submit" class="anc smlt" name="action" value="ACCEPT">
+          <input type="submit" class="anc smlt" name="action" value="REJECT">
+        </form>
       </td>
     </tr>
+
 {% endfor %}
   </tbody>
 </table>
+</div>
 {%elif req.query.filter_by(target=current_user).all()|length == 0 %}
 <h4>No requests for you</h4>
 {% endif %}
+{%if}
+<hr>  
+ 
 
 {% endblock main %}

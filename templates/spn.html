@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <title>Influenza</title>
-  <link rel="stylesheet" href="{{ url_for('static',filename='css/main.css')}}"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
   integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('static',filename='css/css.css')}}">
@@ -15,14 +14,16 @@
 <div style="flex:flow-root;">
 <h1 style=><a class="bigt-l" href="/spnh/{{current_user}}">Influenza</a></h1>
 <div>
-<h6 style="display: inline-block;"><a class="anc smlt" href="/spns/{{current_user}}">Search Campaigns</a> 
-<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}} , youre a sponser <a class="anc smlt" href="/spnd/{{current_user}}">Your Account & Campaigns </a></p>
+<h6 style="display: inline-block;"><a class="anc smlt" href="/spns/{{current_user}}">Search</a> 
+<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}} , you're a sponser <a class="anc smlt" href="/spnd/{{current_user}}">Your Account & Campaigns </a></p>
 <a class="anc smlt" href="/login">Logout</a></h6>
 </div>
 </div>
 {% block main %}
     
 {% endblock main %}
-Reach out at 23f2005059@ds.study.iitm.ac.in<br>
-<small>&copy; copyright owner is Hameed</small>
+<hr>
+<hr>
+<hr>
+<hr>
 </body></html>

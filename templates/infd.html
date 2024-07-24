@@ -1,5 +1,5 @@
 {% extends 'inf.html' %}{% block main %}
-<div>
+<div class="ib">
     <p>account details</p>
     <dl>
         <dt>ID</dt>
@@ -10,9 +10,18 @@
         <dd>{{users.query.filter_by(ID=current_user).first().D_join}}</dd>
         <dt>Type of user</dt>
         <dd>{{users.query.filter_by(ID=current_user).first().Role}}</dd>
+        <dt>Influence</dt>
+        <dd>{{influs.query.filter_by(ID=current_user).first().niche}}</dd>
+        <dt>Platforms</dt>
+        <dd>{{influs.query.filter_by(ID=current_user).first().plats}}</dd>
+        <dt>Followers</dt>
+        <dd>{{influs.query.filter_by(ID=current_user).first().folls}}</dd>
+        <dt>Bio</dt>    
+        <dd>{{influs.query.filter_by(ID=current_user).first().bio}}</dd>
     </dl>
-    <a class="anc smlt" href="/delete/{{current_user}}">delete account</a>
-    <a class="anc smlt" href="/">Make new account</a>
+
+    <a class="anc smlt" href="/delete/{{current_user}}">delete account</a><br><br>
+    <a class="anc smlt" href="/update/{{current_user}}">update account</a>
 
 
 </div>

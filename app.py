@@ -164,7 +164,7 @@ def infh(current_user):
             return render_template('error.html',message='this is not the page you are looking for')
     except Exception as e:
         return render_template('error.html',message=str(e))
-        return render_template('error.html',message='this is not the page you are looking for')
+
 @app.route('/infs/<int:current_user>')
 def infs(current_user):
     try:
@@ -405,19 +405,24 @@ def update_req(request_id):
             if request.form['action']=='ACCEPT':
                 req.query.filter_by(ID=request_id).update({'status':'ACCEPTED'})
                 db.session.commit()
-                return redirect(f'/spnd/{current_user}')
+                if users.query.filter_by(ID=current_user).first().Role=='inf':
+                    return redirect(f'/infh/{current_user}')
+                elif users.query.filter_by(ID=current_user).first().Role=='spn':
+                    return redirect(f'/spnh/{current_user}')
             elif request.form['action']=='REJECT':
-                req.query.filter_by(ID=request_id).update({'status':'REJECTED'})
+                req.query.filter_by(ID=request_id).delete()
                 db.session.commit()
-                return redirect(f'/spnd/{current_user}')
+                if users.query.filter_by(ID=current_user).first().Role=='inf':
+                    return redirect(f'/infh/{current_user}')
+                elif users.query.filter_by(ID=current_user).first().Role=='spn':
+                    return redirect(f'/spnh/{current_user}')    
             else:
                 return render_template('error.html', message="Under Maintainance")
         except Exception as e:
             return render_template('error.html', message=str(e))  # Handle other exceptions
-    return render_template('error.html', message="invalid method used")
 
 #*****development settings*******
-current_user=2
+#current_user=2
 
 if __name__ == '__main__':
     app.run(debug=True)

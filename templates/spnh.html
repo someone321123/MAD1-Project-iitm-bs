@@ -2,44 +2,128 @@
 <!--tables
 maybe req, ads, users
 -->
+<br><br>
 
-
-<a class="anc" href="/new_camp/{{current_user}}" style="margin-left: 10px;">Create new Campaign</a> <br> <br><hr>
-{% if req.query.filter_by(target=current_user).all()|length > 0 %}
+<a class="anc"  href="/new_camp/{{current_user}}" style="display: block; margin: 0 auto; width: fit-content;">Create new Campaign</a> <br> <br><hr>
+{% if req.query.filter_by(target=current_user,status='PENDING').all()|length > 0  %}
     <h4>Requests for you</h4>
-
-
+<div class="container my-3">
 <table class="table">
   <thead>
     <tr>
       <th scope="col">Requestor</th>
       <th scope="col">Ad name</th>
       <th scope="col">Duration</th>
-      <th scope="col">Campaign ID</th>
-      <th scope="col">Buttons</th>
+      <th scope="col">Campaign</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
                     
-  <tbody>
+  <tbody> 
+
 {% for req in req.query.filter_by(target=current_user).all() %}
+{%if req.status=='PENDING'%}
     <tr>
       <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
       <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
       <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
-      <td>{{ads.query.filter_by(ID=req.ad).first().camps}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
       <td>
-        <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">DETAILS</a></button>
-        
+        <form action="/update_req/{{req.ID}}" method="POST" class="ib">
+          <input type="hidden" name="request_id" value="{{ req.ID }}">
+          <input type="submit" class="anc smlt" name="action" value="ACCEPT">
+          <input type="submit" class="anc smlt" name="action" value="REJECT">
+        </form>
       </td>
     </tr>
+    {%endif%}
+
 {% endfor %}
   </tbody>
 </table>
-{%elif req.query.filter_by(target=current_user).all()|length == 0 %}
-<h4>No requests for you</h4>
-{% endif %}
-            
-        
 </div>
+{%else %}
+<h4>you have 0 requests!</h4>
+{% endif %}
+
+{% if req.query.filter_by(reqer=current_user, status='PENDING').all()|length > 0 %}
+    <h4>Requests from you</h4>
+<div class="container my-3">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Request target</th>
+      <th scope="col">Ad name</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Campaign</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+                    
+  <tbody>
+    {% for req in req.query.filter_by(reqer=current_user).all() %}
+    {%if req.status=='PENDING'%}
+    <tr>
+      <td>{{users.query.filter_by(ID=req.target).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
+      <td>
+        <form action="/update_req/{{req.ID}}" method="POST" class="ib">
+          <input type="hidden" name="request_id" value="{{ req.ID }}">
+          <input type="submit" class="anc smlt" name="action" value="REJECT">
+        </form>
+      </td>
+    </tr>
+    {%endif%}
+      {% endfor %}
+  </tbody>
+</table>
+</div>
+{%else %}
+<h4>you made 0 requests!!</h4>
+{% endif %}
+
+{% if (req.query.filter_by(target=current_user,status='ACCEPTED').all()|length > 0 or req.query.filter_by(reqer=current_user,status='ACCEPTED').all()|length >0 )  %}
+    <h4>Accepted Requests</h4>
+<div class="container my-3">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Request target</th>
+      <th scope="col">requestor</th>
+      <th scope="col">Ad name</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Campaign</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+                    
+  <tbody>
+    {% for req in req.query.filter_by(status='ACCEPTED').all() %}
+    {%if req.reqer==current_user or req.target==current_user%}
+    <tr>
+      <td>{{users.query.filter_by(ID=req.target).first().Name}}</td>
+      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
+      <td>
+        <form action="/update_req/{{req.ID}}" method="POST" class="ib">
+          <input type="hidden" name="request_id" value="{{ req.ID }}">
+          <input type="submit" class="anc smlt" name="action" value="REJECT">
+        </form>
+      </td>
+    </tr>
+    {%endif%}
+      {% endfor %}  
+  </tbody>
+</table>
+</div>
+{%else %}
+<h4>you have 0 active ads!!!</h4>
+{%endif%}
+
+<hr>  
     
 {% endblock main %}

@@ -1,6 +1,6 @@
 {% extends 'inf.html' %}{% block main %}
 
-{% if req.query.filter_by(target=current_user).all()|length > 0 and req.query.filter_by(status='PENDING').all()|length > 0 %}
+{% if req.query.filter_by(target=current_user,status='PENDING').all()|length > 0  %}
     <h4>Requests for you</h4>
 <div class="container my-3">
 <table class="table">
@@ -37,11 +37,11 @@
   </tbody>
 </table>
 </div>
-{%elif req.query.filter_by(target=current_user).all()|length == 0 %}
-<h4>No requests for you</h4>
+{%else %}
+<h4>you have 0 requests!</h4>
 {% endif %}
 
-{% if req.query.filter_by(reqer=current_user).all()|length > 0 and req.query.filter_by(status='PENDING').all()|length > 0 %}
+{% if req.query.filter_by(reqer=current_user, status='PENDING').all()|length > 0 %}
     <h4>Requests from you</h4>
 <div class="container my-3">
 <table class="table">
@@ -75,11 +75,11 @@
   </tbody>
 </table>
 </div>
-{%elif req.query.filter_by(reqer=current_user).all()|length == 0 %}
-<h4>No requests from you</h4>
+{%else %}
+<h4>You made 0 requests!!</h4>
 {% endif %}
 
-{% if (req.query.filter_by(target=current_user).all()|length > 0 or req.query.filter_by(reqer=current_user).all()|length >0 ) and req.query.filter_by(status='ACCEPTED').all()|length > 0 %}
+{% if (req.query.filter_by(target=current_user,status='ACCEPTED').all()|length > 0 or req.query.filter_by(reqer=current_user,status='ACCEPTED').all()|length >0 )  %}
     <h4>Accepted Requests</h4>
 <div class="container my-3">
 <table class="table">
@@ -96,7 +96,7 @@
                     
   <tbody>
     {% for req in req.query.filter_by(status='ACCEPTED').all() %}
-    {%if req.status=='ACCEPTED'%}
+    {%if req.reqer==current_user or req.target==current_user%}
     <tr>
       <td>{{users.query.filter_by(ID=req.target).first().Name}}</td>
       <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
@@ -106,7 +106,6 @@
       <td>
         <form action="/update_req/{{req.ID}}" method="POST" class="ib">
           <input type="hidden" name="request_id" value="{{ req.ID }}">
-          <input type="submit" class="anc smlt" name="action" value="ACCEPT">
           <input type="submit" class="anc smlt" name="action" value="REJECT">
         </form>
       </td>
@@ -116,8 +115,8 @@
   </tbody>
 </table>
 </div>
-{%elif req.query.filter_by(reqer=current_user).all()|length == 0 %}
-<h4>No Active ADs</h4>
+{%else %}
+<h4>you have 0 active ads!!!</h4>
 {%endif%}
 
 <hr>  

@@ -162,7 +162,8 @@ def infh(current_user):
             return render_template('infh.html', current_user= current_user,users=users,req=req,ads=ads)
         else:
             return render_template('error.html',message='this is not the page you are looking for')
-    except:
+    except Exception as e:
+        return render_template('error.html',message=str(e))
         return render_template('error.html',message='this is not the page you are looking for')
 @app.route('/infs/<int:current_user>')
 def infs(current_user):

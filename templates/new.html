@@ -4,7 +4,7 @@
 <!--class="container my-3"-->
 {% if new=='camp' %}
 
-<h6>Make it!</h6>
+<h6 class="ib">Make a new campaign</h6>
 <div class="ib">
 <form action="/new_camp/{{current_user}}" method="POST">
     <label for="goal">goal:</label><br>
@@ -18,12 +18,12 @@
     <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
     <label for="desc">Description</label>
     <textarea id="desc" name="desc" >Describe your campaign</textarea><br>
-    <input type="submit" value="Create">
+    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
 </form> 
 </div>
 {%elif new=='ad'%}
-here ad
-<h6>Make it!</h6>
+<h6 class="ib">Make a new ad</h6>
+
 <div class="ib">
 <form action="/new_ad/{{camp}}" method="POST">
     <label for="Name">Name:</label><br>
@@ -34,22 +34,22 @@ here ad
     <input type="text" class="ib" id="budget" name="budget" value="budget"><br>
     <label for="reqs">requirements</label>
     <textarea id="reqs" name="reqs" >Describe your requirements</textarea><br>
-    <input type="submit" value="Create">
+    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
 </form>     </div>
 
 {% elif new=='req'%}
-here req
-<h6>Make a request</h6>
+<h6 class="ib">Make a request</h6>
+
 <div class="ib">
 <form action="/new_request/{{ad}}" method="POST">
     <label for="target">User ID:</label><br>
-    <input type="text" id="target" name="target" value="target" required class="ib"><br>
+    <input type="text" id="target" name="target" placeholder="target" required class="ib"><br>
     <label for="ad">Ad ID:</label><br>
     <input type="text" id="ad" name="ad" value="{{ad}}" required class="ib"><br>
-    <input type="submit" value="Create">
+    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
 </form> </div>
 {%elif new=='update_camp'%}
-<h6>Update Campaign</h6>
+<h6 class="ib">Update Campaign</h6>
 <div class="ib">
 <form action="/update_camp/{{camp}}" method="POST">
     <label for="goal">goal:</label><br>
@@ -63,10 +63,10 @@ here req
     <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
     <label for="desc">Description</label>
     <textarea id="desc" name="desc" >{{camps.query.filter_by(ID=camp).first().desc}}</textarea><br>
-    <input type="submit" value="update">
+    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="update">
 </form> </div>
 {%elif new=='update_ad'%}
-<h6>Update Ad</h6>
+<h6 class="ib">Update Ad</h6>
 <div class="ib">
     <form action="/update_ad/{{ad}}" method="POST">
     <label for="Name">Name:</label><br>
@@ -77,11 +77,11 @@ here req
     <input type="text" class="ib" id="budget" name="budget" value="{{ads.query.filter_by(ID=ad).first().budget}}"><br>
     <label for="reqs">requirements</label>
     <textarea id="reqs" name="reqs" >{{ads.query.filter_by(ID=ad).first().reqs}}</textarea><br>
-    <input type="submit" value="update">
+    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="update">                            
 </form>
 </div>
 {%elif new=='update_user'%}
-<h6>Update User</h6>
+<h6 class="ib">Update User</h6>
 <div class="ib">
 <form action="/update/{{current_user}}" method="POST">
     <label for ="niche">niche:</label><br>
@@ -92,7 +92,7 @@ here req
     <input type="text" class="ib" id="plats" name="plats" value="{{influs.query.filter_by(ID=current_user).first().plats}}"><br>
     <label for="bio">bio:</label><br>
     <textarea id="bio" name="bio" >{{influs.query.filter_by(ID=current_user).first().bio}}</textarea><br>
-    <input type="submit" value="update">
+    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="update">
 </form>
 </div>
 {% else %}

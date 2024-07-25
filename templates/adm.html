@@ -10,21 +10,15 @@
   integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('static',filename='css/css.css')}}">
 </head>
-<body>
-
-<h1 style=><a class="bigt-l" href="/infh/{{current_user}}">Influenza</a></h1>
-<nav class=".nav -link">
-<a class="anc smlt" href="/infh/{{current_user}}">home</a>
-<a class="anc smlt" href="/infs/{{current_user}}">search</a>
-<a class="anc smlt" href="/infd/{{current_user}}">account</a>
+<body><style></style>
+<div style="flex:flow-root;">
+<h1 style=><a class="bigt-l" href="/admh">Influenza</a></h1>
+<h6 style="display: inline-block;"> <a class="anc smlt" href="/adms">search</a>
+<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}}  <a class="anc smlt" href="/admd/{{current_user}}">account</a></p>
 <a class="anc smlt" href="/login">Logout</a>
-</h6></nav>
-<p class="ib">Hello {{users.query.filter_by(ID=current_user).first().Name}} , youre an influencer </p>
-</div>
-
-<hr>
-
+</h6></div>
 {% block main %}
+    
 {% endblock main %}
 <hr>
 <hr>

@@ -99,6 +99,10 @@ class req(db.Model):
 
 
 db.create_all()
+if users.query.filter_by(Role='adm').first() is None:
+    user=users(Name='admin',Password='admin', Role='adm')
+    db.session.add(user)
+    db.session.commit()
 
 @app.route('/', methods=['GET', 'POST'])
 def register():
@@ -139,6 +143,10 @@ def login():
 
         if not name or not password:
             return render_template('error.html', message="Name and Password are required")
+        if name =='admin' and password=='admin':
+            global adm
+            adm=users.query.filter_by(Name=name, Password=password).first().ID
+            return redirect('/admh')
 
         user = users.query.filter_by(Name=name, Password=password).first()
         if user and users.query.filter_by(Name=name).first().Password == password:
@@ -155,6 +163,10 @@ def login():
             return render_template('error.html', message="Looks like user doesnt exist")
     return render_template('login.html')
 
+@app.route('/admh')
+def admh():
+    return render_template('admh.html', users=users, req=req,ads=ads, current_user=adm)
+
 @app.route('/infh/<int:current_user>')
 def infh(current_user):
     try:
@@ -167,7 +179,10 @@ def infh(current_user):
 
 @app.route('/infs/<int:current_user>', methods=['GET','POST'])
 def infs(current_user):
-    results = ads.query.all()
+    result = ads.query.all()
+    results_priv=ads.query.join(camps, ads.camps==camps.ID).filter(camps.visibs=='private').all()
+  
+    results=[i for i in result if i not in results_priv]
     if request.method=='POST':
         value = request.form['value']
         
@@ -186,9 +201,11 @@ def infs(current_user):
                          .join(spons, camps.spn == spons.ID)
                          .filter(spons.Name.ilike(f'%{value}%'))
                          .all())
+        results_priv=ads.query.join(camps, ads.camps==camps.ID).filter(camps.visibs=='private').all()
         
         # Combine results (removing duplicates)
-        results = list(set(results_ads + results_camps +results_spons))
+        result = list(set(results_ads + results_camps +results_spons ))
+        results=[i for i in result if i not in results_priv]
         return render_template('infs.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results)
     try:
         if users.query.filter_by(ID=current_user).first().Role=='inf':

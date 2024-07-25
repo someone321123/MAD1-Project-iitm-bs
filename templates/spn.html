@@ -10,15 +10,19 @@
   integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('static',filename='css/css.css')}}">
 </head>
-<body><style></style>
-<div style="flex:flow-root;">
+
+<body>
+
 <h1 style=><a class="bigt-l" href="/spnh/{{current_user}}">Influenza</a></h1>
-<div>
-<h6 style="display: inline-block;"><a class="anc smlt" href="/spns/{{current_user}}">Search</a> 
-<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}} , you're a sponser <a class="anc smlt" href="/spnd/{{current_user}}">Your Account & Campaigns </a></p>
+<nav class=".nav -link">
+<a class="anc smlt" href="/spnh/{{current_user}}">home</a>
+<a class="anc smlt" href="/spns/{{current_user}}">Search</a> 
+<a class="anc smlt" href="/spnd/{{current_user}}">Your Account & Campaigns </a>
 <a class="anc smlt" href="/login">Logout</a></h6>
-</div>
-</div>
+</nav>
+<br>
+<p class="ib">Hello {{users.query.filter_by(ID=current_user).first().Name}} , you're a sponser</p>
+
 {% block main %}
     
 {% endblock main %}

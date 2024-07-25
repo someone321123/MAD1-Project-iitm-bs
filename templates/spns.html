@@ -10,10 +10,11 @@
 <table class="table">
 <thead>
   <tr>
+    <th scope="col">Influencer ID</th>
     <th scope="col">Influencer</th>
     <th scope="col">Platforms</th>
     <th scope="col">Niche</th>
-    <th scope="col">Actions</th>
+    <th scope="col">Followers</th>
   </tr>
 </thead>
                   
@@ -22,15 +23,11 @@
 {% for r in results %}
 
   <tr>
+    <td>{{r.ID}}</td>
     <td>{{r.Name}}</td>
     <td>{{r.plats}}</td>
     <td>{{r.niche}}</td>
-    <td>
-      <form action="/#" method="POST" class="ib">
-        <input type="hidden" name="request_id" value="xxx">
-        <input type="submit" class="anc smlt" name="action" value="Make Request">
-      </form>
-    </td>
+    <td>{{r.folls}}         </td>
   </tr>
 
 

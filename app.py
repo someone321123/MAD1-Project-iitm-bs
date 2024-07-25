@@ -219,19 +219,17 @@ def spnh(current_user):
 def spns(current_user):
     results = influs.query.all()
     if request.method=='POST':
-        value = request.form['value']
-        
+        value = request.form['value']        
         # Query for influs
-        results_inf = influs.query.filter(influs.Name.ilike(f'%{value}%')).all()
-       
+        results_inf = influs.query.filter(influs.Name.ilike(f'%{value}%')).all()       
         # Query for plat
-        results_plts = influs.query.filter(influs.plats.ilike(f'%{value}%')).all()
-       
+        results_plts = influs.query.filter(influs.plats.ilike(f'%{value}%')).all()       
         # Query for Niche
         results_niche = influs.query.filter(influs.niche.ilike(f'%{value}%')).all()
-        
+        results_folls = influs.query.filter(influs.folls.ilike(f'%{value}%')).all()
+        results_id=influs.query.filter(influs.ID.ilike(f'%{value}%')).all()
         # Combine results (removing duplicates)
-        results = list(set(results_inf + results_plts +results_niche))
+        results = list(set(results_inf + results_plts +results_niche + results_folls + results_id))
         return render_template('spns.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results)
     try:
         if users.query.filter_by(ID=current_user).first().Role=='spn':
@@ -456,13 +454,28 @@ def update_req(request_id):
                     return redirect(f'/infh/{current_user}')
                 elif users.query.filter_by(ID=current_user).first().Role=='spn':
                     return redirect(f'/spnh/{current_user}')    
+            elif request.form['action']=='Make Request':
+                reqe = req(
+                    target=spons.query.filter_by(ID=camps.query.filter_by(ID=ads.query.filter_by(ID=request_id).first().camps).first().spn).first().ID,
+                    reqer=current_user,
+                    ad=request_id,
+                    status='PENDING',
+                    D_iss=datetime.utcnow()
+                )
+                db.session.add(reqe)
+                db.session.commit()
+                if users.query.filter_by(ID=current_user).first().Role=='inf':
+                    return redirect(f'/infs/{current_user}')
+                elif users.query.filter_by(ID=current_user).first().Role=='spn':
+                    return redirect(f'/spns/{current_user}')
+            
             else:
                 return render_template('error.html', message="Under Maintainance")
         except Exception as e:
             return render_template('error.html', message=str(e))  # Handle other exceptions
 
 #*****development settings*******
-current_user=1
+#current_user=1
 
 if __name__ == '__main__':
     app.run(debug=True)

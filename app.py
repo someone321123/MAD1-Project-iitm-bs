@@ -165,15 +165,38 @@ def infh(current_user):
     except Exception as e:
         return render_template('error.html',message=str(e))
 
-@app.route('/infs/<int:current_user>')
+@app.route('/infs/<int:current_user>', methods=['GET','POST'])
 def infs(current_user):
+    results = ads.query.all()
+    if request.method=='POST':
+        value = request.form['value']
+        
+        # Query for Ads
+        results_ads = ads.query.filter(ads.Name.ilike(f'%{value}%')).all()
+       
+        # Query for Camps
+        results_camps = (ads.query
+                         .join(camps, ads.camps == camps.ID)
+                         .filter(camps.goal.ilike(f'%{value}%'))
+                         .all())
+       
+        # Query for Spons
+        results_spons = (ads.query
+                         .join(camps, ads.camps == camps.ID)
+                         .join(spons, camps.spn == spons.ID)
+                         .filter(spons.Name.ilike(f'%{value}%'))
+                         .all())
+        
+        # Combine results (removing duplicates)
+        results = list(set(results_ads + results_camps +results_spons))
+        return render_template('infs.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results)
     try:
         if users.query.filter_by(ID=current_user).first().Role=='inf':
-            return render_template('infs.html',current_user=current_user, users=users)
+            return render_template('infs.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results)
         else:
             return render_template('error.html',message='this is not the page you are looking for')
-    except:
-        return render_template('error.html',message='this is not the page you are looking for')
+    except Exception as e:
+        return render_template('error.html',message=str(e))
 @app.route('/infd/<int:current_user>')
 def infd(current_user):
     try:
@@ -192,15 +215,32 @@ def spnh(current_user):
             return render_template('error.html',message='this is not the page you are looking for')
     except:
         return render_template('error.html',message='this is not the page you are looking for')    
-@app.route('/spns/<int:current_user>')
+@app.route('/spns/<int:current_user>' , methods=['GET','POST'])
 def spns(current_user):
+    results = influs.query.all()
+    if request.method=='POST':
+        value = request.form['value']
+        
+        # Query for influs
+        results_inf = influs.query.filter(influs.Name.ilike(f'%{value}%')).all()
+       
+        # Query for plat
+        results_plts = influs.query.filter(influs.plats.ilike(f'%{value}%')).all()
+       
+        # Query for Niche
+        results_niche = influs.query.filter(influs.niche.ilike(f'%{value}%')).all()
+        
+        # Combine results (removing duplicates)
+        results = list(set(results_inf + results_plts +results_niche))
+        return render_template('spns.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results)
     try:
         if users.query.filter_by(ID=current_user).first().Role=='spn':
-            return render_template('spns.html',current_user=current_user, users=users)
+            return render_template('spns.html',current_user=current_user, users=users,camps=camps, spons=spons,ads=ads,results=results)
         else:
             return render_template('error.html',message='this is not the page you are looking for')
-    except:
-        return render_template('error.html',message='this is not the page you are looking for')
+    except Exception as e:
+        return render_template('error.html',message=str(e))
+    
 @app.route('/spnd/<int:current_user>' , methods=['GET','POST'])
 def spnd(current_user):
     try:
@@ -422,7 +462,7 @@ def update_req(request_id):
             return render_template('error.html', message=str(e))  # Handle other exceptions
 
 #*****development settings*******
-#current_user=2
+current_user=1
 
 if __name__ == '__main__':
     app.run(debug=True)

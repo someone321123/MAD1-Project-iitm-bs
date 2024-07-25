@@ -1,25 +1,17 @@
 {% extends 'inf.html' %}
 {% block main %}
-<form action="" method="POST" style="display: inline-block;">
-    <label for="filter">filter by</label>
-    <select id="filter">
-        <option value="author">Author</option>
-        <option value="rating">Rating</option>
-        <option value="name">Name</option>
-    </select>
-    <input type="text" placeholder="Search" style="display: inline-block;">
+<form action="/infs/{{current_user}}" method="POST" style="display: inline-block;">
+
+    <input type="text" name="value" class="ib" placeholder="Search" style="display: inline-block;">
 </form>
 <hr>
+{% if results %}
 
-
-<h4>all</h4>
-div class="container my-3">
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">Requestor</th>
       <th scope="col">Ad name</th>
-      <th scope="col">Duration</th>
+      <th scope="col">sponser</th>
       <th scope="col">Campaign</th>
       <th scope="col">Actions</th>
     </tr>
@@ -27,29 +19,26 @@ div class="container my-3">
                     
   <tbody> 
 
-{% for req in req.query.filter_by(target=current_user).all() %}
-{%if req.status=='PENDING'%}
+{% for r in results %}
+
     <tr>
-      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
-      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
-      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
-      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
+      <td>{{r.Name}}</td>
+      <td>{{spons.query.filter_by(ID=camps.query.filter_by(ID=r.camps).first().spn).first().Name}}</td>
+      <td>{{camps.query.filter_by(ID=r.camps).first().goal}}</td>
       <td>
-        <form action="/update_req/{{req.ID}}" method="POST" class="ib">
-          <input type="hidden" name="request_id" value="{{ req.ID }}">
-          <input type="submit" class="anc smlt" name="action" value="ACCEPT">
-          <input type="submit" class="anc smlt" name="action" value="REJECT">
+        <form action="/infs/{{current_user}}" method="POST" class="ib">
+          <input type="hidden" name="request_id" value="xxx">
+          <input type="submit" class="anc smlt" name="action" value="Make Request">
         </form>
       </td>
     </tr>
-    {%endif%}
+
 
 {% endfor %}
   </tbody>
 </table>
-</div>
-{%else %}
-<h4>No requests for you</h4>
+{% else %}
+<h4 class="ib">no ads found</h4>
 {% endif %}
 
 

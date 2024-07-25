@@ -1,7 +1,7 @@
 {% extends 'inf.html' %}{% block main %}
 
 {% if req.query.filter_by(target=current_user,status='PENDING').all()|length > 0  %}
-    <h4>Requests for you</h4>
+    <h4 class="ib">Requests for you</h4>  
 <div class="container my-3">
 <table class="table">
   <thead>
@@ -38,11 +38,11 @@
 </table>
 </div>
 {%else %}
-<h4>you have 0 requests!</h4>
+<h4     class="ib">you have 0 requests!</h4>
 {% endif %}
 
 {% if req.query.filter_by(reqer=current_user, status='PENDING').all()|length > 0 %}
-    <h4>Requests from you</h4>
+    <h4   class="ib">Requests from you</h4>
 <div class="container my-3">
 <table class="table">
   <thead>
@@ -76,11 +76,11 @@
 </table>
 </div>
 {%else %}
-<h4>You made 0 requests!!</h4>
+<h4 class="ib">You made 0 requests!!</h4>
 {% endif %}
 
 {% if (req.query.filter_by(target=current_user,status='ACCEPTED').all()|length > 0 or req.query.filter_by(reqer=current_user,status='ACCEPTED').all()|length >0 )  %}
-    <h4>Accepted Requests</h4>
+    <h4 class="ib">Accepted Requests</h4>
 <div class="container my-3">
 <table class="table">
   <thead>
@@ -116,7 +116,7 @@
 </table>
 </div>
 {%else %}
-<h4>you have 0 active ads!!!</h4>
+<h4   class="ib">you have 0 active ads!!!</h4>
 {%endif%}
 
 <hr>  

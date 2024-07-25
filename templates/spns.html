@@ -1,56 +1,43 @@
 {% extends 'spn.html' %}
 {% block main %}
-<form action="" method="POST" style="display: inline-block;">
-    <label for="filter">filter by</label>
-    <select id="filter">
-        <option value="author">Author</option>
-        <option value="rating">Rating</option>
-        <option value="name">Name</option>
-    </select>
-    <input type="text" placeholder="Search" style="display: inline-block;">
+<form action="/spns/{{current_user}}" method ="POST" style="display: inline-block;">
+  <input type="text" name="value" class="ib" placeholder="Search" style="display: inline-block;">
 </form>
 <hr>
-<div class="container my-3">
-    <h4>books</h4>
-    <small><a href="#" type="button" >delete all</a></small>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Index</th>
-                      <th scope="col">Title</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">Author</th>
-                      <th scope="col">Rating</th>
-                      <th scope="col">Buttons</th>
-                    </tr>
-                  </thead>
-                    
-                    <tbody>
-          <tr>
-          
-            <td>Title</td>
-            <td>Author</td>
-            <td>Rating</td>
-            <td>description</td>
-            <td>
-              <a href="/book" type="button" class="btn btn-outline-dark btn-sm mx-1">GO</a></button>
-             
-            
-            </td>
-          </tr>
 
-        </table>
-            
-</div>
+{%if results%}
+<h4>influencers</h4>
+<table class="table">
 <thead>
   <tr>
-    <th scope="col">Index</th>
-    <th scope="col">Name</th>
-    <th scope="col">Number of books</th>
-    <th scope="col">Made on</th>
-    <th scope="col">Description</th>
-    <th scope="col">Buttons</th>
+    <th scope="col">Influencer</th>
+    <th scope="col">Platforms</th>
+    <th scope="col">Niche</th>
+    <th scope="col">Actions</th>
   </tr>
 </thead>
+                  
+<tbody> 
 
+{% for r in results %}
+
+  <tr>
+    <td>{{r.Name}}</td>
+    <td>{{r.plats}}</td>
+    <td>{{r.niche}}</td>
+    <td>
+      <form action="/#" method="POST" class="ib">
+        <input type="hidden" name="request_id" value="xxx">
+        <input type="submit" class="anc smlt" name="action" value="Make Request">
+      </form>
+    </td>
+  </tr>
+
+
+{% endfor %}
+</tbody>
+</table>
+{%else%}
+<h4 class="ib">no influencers found</h4>
+{%endif%}
 {% endblock main %}

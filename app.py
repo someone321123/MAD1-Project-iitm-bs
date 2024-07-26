@@ -18,6 +18,7 @@ class users(db.Model):
     Password = db.Column(db.String(255), nullable=False)
     D_join = db.Column(db.DateTime, default=datetime.utcnow)
     Role = db.Column(db.String(200), default="inf")
+    flag=db.Column(db.Integer, default=0)
     
     # Relationships
     influ = db.relationship('influs', backref='user', uselist=False)
@@ -63,6 +64,7 @@ class camps(db.Model):
     visibs = db.Column(db.String(20), default='public')
     desc = db.Column(db.String(2000), default='no description given')
     spn = db.Column(db.Integer, db.ForeignKey('spons.ID'))
+    flag=db.Column(db.Integer, default=0)
     
     # Relationship
     ads = db.relationship('ads', backref='campaign', lazy='dynamic')
@@ -96,6 +98,19 @@ class req(db.Model):
 
     def __repr__(self):
         return f'<req {self.ID}>'
+
+class neg(db.Model):
+    __tablename__ = 'neg'
+    ID = db.Column(db.Integer, primary_key=True)
+    ad = db.Column(db.Integer)
+    Name = db.Column(db.String(200))
+    reqs = db.Column(db.String(2000), default="no requirements assigned")
+    budget = db.Column(db.Integer, default=100)
+    dura = db.Column(db.String(100), default='Not given')
+
+
+    def __repr__(self):
+        return f'<neg {self.ID}>'
 
 
 db.create_all()
@@ -167,6 +182,15 @@ def login():
 def admh():
     return render_template('admh.html', users=users, req=req,ads=ads, current_user=adm)
 
+@app.route('/adms', methods=['GET','POST'])
+def adms():
+    results=users.query.filter_by(ID=adm).first()
+    if request.method=='POST':
+        value = request.form['value']
+        results=users.query.filter_by(ID=value).first()
+        return render_template('adms.html', users=users, req=req,ads=ads,camps=camps, spons=spons,influs=influs, current_user=adm, results=results)
+    return render_template('adms.html', users=users,camps=camps, req=req,ads=ads, current_user=adm, results=results)
+
 @app.route('/infh/<int:current_user>')
 def infh(current_user):
     try:
@@ -236,17 +260,22 @@ def spnh(current_user):
 def spns(current_user):
     results = influs.query.all()
     if request.method=='POST':
+        view = request.form.get('view')
+        inf= request.form.get('influ')
+        inf= influs.query.filter_by(ID=inf).first()
+        if view=='view':
+            return render_template('view.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results, influ=inf,view='influ')
         value = request.form['value']        
         # Query for influs
-        results_inf = influs.query.filter(influs.Name.ilike(f'%{value}%')).all()       
+   #     results_inf = influs.query.filter(influs.Name.ilike(f'%{value}%')).all()       
         # Query for plat
         results_plts = influs.query.filter(influs.plats.ilike(f'%{value}%')).all()       
         # Query for Niche
         results_niche = influs.query.filter(influs.niche.ilike(f'%{value}%')).all()
-        results_folls = influs.query.filter(influs.folls.ilike(f'%{value}%')).all()
+    #    results_folls = influs.query.filter(influs.folls.ilike(f'%{value}%')).all()
         results_id=influs.query.filter(influs.ID.ilike(f'%{value}%')).all()
         # Combine results (removing duplicates)
-        results = list(set(results_inf + results_plts +results_niche + results_folls + results_id))
+        results = list(set( results_plts +results_niche  + results_id))
         return render_template('spns.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results)
     try:
         if users.query.filter_by(ID=current_user).first().Role=='spn':
@@ -351,7 +380,7 @@ def new_ad(camp):
                 reqs=reqs,
                 dura=dura,
                 budget=budget,
-                camps=camp,            )
+                camps=camp           )
             db.session.add(new_ad)
             db.session.commit()
 
@@ -388,6 +417,36 @@ def new_request(ad):
         except Exception as e:
             return render_template('error.html', message=str(e))  # Handle other exceptions
     return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user, new='req', ad=ad)
+
+@app.route('/new_neg', methods=['GET','POST'])
+def new_neg():
+    if request.method=='POST':
+        try:
+            reqs = request.form['reqs']
+            budget = request.form['budget']
+            dura = request.form['dura']
+            ad=request.form['ad']
+            new_neg = neg(
+                reqs=reqs,
+                dura=dura,
+                budget=budget,
+                ad=ad,
+                Name=ads.query.filter_by(ID=ad).first().Name
+                )
+            new_req=req(
+                target=spons.query.filter_by(ID=camps.query.filter_by(ID=ads.query.filter_by(ID=ad).first().camps).first().spn).first().ID,
+                reqer=current_user,
+                ad=ad,
+                status='NEGOTIATION',
+                D_iss=datetime.utcnow()
+                )
+            db.session.add(new_req)
+            db.session.add(new_neg)
+            db.session.commit()
+            return redirect(f'/infs/{current_user}')
+        except Exception as e:
+            return render_template('error.html', message=str(e))
+    return render_template('error.html', message="Method not allowed")
 
 @app.route('/update/<int:current_user>', methods=['GET','POST'])
 def update(current_user):
@@ -485,14 +544,22 @@ def update_req(request_id):
                     return redirect(f'/infs/{current_user}')
                 elif users.query.filter_by(ID=current_user).first().Role=='spn':
                     return redirect(f'/spns/{current_user}')
+                else:
+                    return render_template('error.html', message="User doesnt exist")
+            elif request.form['action']=='Make Negotiation':
+                ad = request_id
+                return render_template('view.html', view='neg', ad=ad, ads=ads, users=users, req=req, camps=camps, spons=spons, influs=influs)
             
             else:
                 return render_template('error.html', message="Under Maintainance")
         except Exception as e:
             return render_template('error.html', message=str(e))  # Handle other exceptions
 
+
 #*****development settings*******
 #current_user=1
+adm=4
+#****remove this line when you are done with development*******
 
 if __name__ == '__main__':
     app.run(debug=True)

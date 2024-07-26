@@ -15,6 +15,7 @@
     <th scope="col">Platforms</th>
     <th scope="col">Niche</th>
     <th scope="col">Followers</th>
+    <th scope="col">Action</th>
   </tr>
 </thead>
                   
@@ -28,6 +29,10 @@
     <td>{{r.plats}}</td>
     <td>{{r.niche}}</td>
     <td>{{r.folls}}         </td>
+    <td><form action="/spns/{{current_user}}" method ="POST" style="display: inline-block;">
+      <input type="hidden" name="influ" value="{{ r.ID}}">
+      <input type="submit" name="view" class="anc smlt" value="view" style="display: inline-block;">
+    </form></td>
   </tr>
 
 

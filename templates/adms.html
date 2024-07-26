@@ -1,0 +1,187 @@
+{% extends 'adm.html' %} {% block main %}
+
+<form action="/adms" method="POST" style="display: inline-block;">
+    <input type="text" name="value" class="ib" placeholder="Search" value="{{results.ID}}" style="display: inline-block;">
+</form>
+<br><hr>
+<hr>
+{%if results%}
+{%if results.Role=='spn'%}
+<div class="ib">
+    <p class="bigt-l" style="font-size: 25px;">account details</p>
+    <hr>
+    <hr>
+    <dl>
+        <dt>ID</dt>
+        <dd>{{results.ID}}</dd>
+        <dt>Name</dt>
+        <dd>{{results.Name}}</dd>
+        <dt>Date of joining</dt>
+        <dd>{{results.D_join}}</dd>
+        <dt>Type of user</dt>
+        <dd>{{results.Role}}</dd>
+        <dt>Niche</dt>
+        <dd>{{spons.query.filter_by(ID=results.ID).first().niche}} </dd>
+        <dt>bio</dt>
+        <dd>{{spons.query.filter_by(ID=results.ID).first().bio}} </dd>
+    </dl>
+</div>
+<hr>
+{%if camps.query.filter_by(spn=results.ID).all()|length > 0%}
+<p class="bigt-l" style="font-size:27px;">user's Campaigns</p> <br> <hr><hr>
+{% for c in camps.query.filter_by(spn=results.ID).all()%}
+<div class="ib">
+<dl>
+    <dt>ID</dt>
+    <dd>{{c.ID}}</dd>
+    <dt>Goal</dt>
+    <dd>{{c.goal}}</dd>
+    <dt>Description</dt>
+    <dd>{{c.desc}}</dd>
+</dl> </div>
+{%if ads.query.filter_by(camps=c.ID).all()|length > 0%}
+<p class="bigt-l" style="font-size:20px;">Ads for {{c.goal}}</p>
+<div class="container my-3">
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Name</th>
+        <th scope="col">Budget</th>
+        <th scope="col">Duration</th>
+      </tr>
+    </thead>
+      <tbody>
+        {% for ad in ads.query.filter_by(camps=c.ID).all() %}
+<tr>
+<td>{{loop.index}}</td>
+<td><p>{{ad.Name}}</p></td>
+<td>{{ad.budget}} </td>
+<td>{{ad.dura}} </td>
+</tr>
+        {% endfor %}
+      </tbody>
+</table> </div>
+{% endif %}
+  <br> 
+ <a class="anc smlt" href="#">flag Campaign</a> <br><br>
+<hr> <br> <br>
+{%endfor%}
+{% endif %}
+{% if (req.query.filter_by(target=results.ID).all()|length > 0 or req.query.filter_by(reqer=results.ID,).all()|length >0 )  %}
+    <h4 class="ib">requests made or received by this user</h4>
+<div class="container my-3">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Request target</th>
+      <th scope="col">requestor</th>
+      <th scope="col">Ad name</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Campaign</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+                    
+  <tbody>
+    {% for req in req.query.filter_by(reqer=results.ID).all() %}
+    <tr>
+      <td>{{users.query.filter_by(ID=req.target).first().Name}}</td>
+      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
+      <td>{{req.status}}</td>
+    </tr>
+      {% endfor %}  
+      {% for req in req.query.filter_by(target=results.ID).all() %}
+    <tr>
+      <td>{{users.query.filter_by(ID=req.target).first().Name}}</td>
+      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
+      <td>{{req.status}}</td>
+    </tr>
+      {% endfor %} 
+  </tbody>
+</table>
+</div>
+{%else %}
+<h4   class="ib">this user has 0 ad requests!!!</h4>
+{%endif%}
+
+{%elif results.Role=='inf'%}
+<div class="ib">
+    <p>account details</p>
+    <dl>
+        <dt>ID</dt>
+        <dd>{{results.ID}}</dd>
+        <dt>Name</dt>
+        <dd>{{results.Name}}</dd>
+        <dt>Date of joining</dt>
+        <dd>{{results.D_join}}</dd>
+        <dt>Type of user</dt>
+        <dd>{{results.Role}}</dd>
+        <dt>niche</dt>
+        <dd>{{influs.query.filter_by(ID=results.ID).first().niche}}</dd>
+        <dt>Platforms</dt>
+        <dd>{{influs.query.filter_by(ID=results.ID).first().plats}}</dd>
+        <dt>Followers</dt>
+        <dd>{{influs.query.filter_by(ID=results.ID).first().folls}}</dd>
+        <dt>Bio</dt>    
+        <dd>{{influs.query.filter_by(ID=results.ID).first().bio}}</dd>
+    </dl>
+    <a class="anc smlt" href="#">flag account</a>
+</div>
+{% if (req.query.filter_by(target=results.ID).all()|length > 0 or req.query.filter_by(reqer=results.ID,).all()|length >0 )  %}
+    <h4 class="ib">requests made or received by this user</h4>
+<div class="container my-3">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Request target</th>
+      <th scope="col">requestor</th>
+      <th scope="col">Ad name</th>
+      <th scope="col">Duration</th>
+      <th scope="col">Campaign</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+                    
+  <tbody>
+    {% for req in req.query.filter_by(reqer=results.ID).all() %}
+    <tr>
+      <td>{{users.query.filter_by(ID=req.target).first().Name}}</td>
+      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
+      <td>{{req.status}}</td>
+    </tr>
+      {% endfor %}  
+      {% for req in req.query.filter_by(target=results.ID).all() %}
+    <tr>
+      <td>{{users.query.filter_by(ID=req.target).first().Name}}</td>
+      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().dura}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().campaign.goal}}</td>
+      <td>{{req.status}}</td>
+    </tr>
+      {% endfor %} 
+  </tbody>
+</table>
+</div>
+{%else %}
+<h4   class="ib">this user has 0 ad requests!!!</h4>
+{%endif%}
+{%else%} 
+admin
+{%endif%}
+
+
+{%else%}
+no such user
+{%endif%}
+{%endblock main %}

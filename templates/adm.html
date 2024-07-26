@@ -10,13 +10,14 @@
   integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ url_for('static',filename='css/css.css')}}">
 </head>
-<body><style></style>
-<div style="flex:flow-root;">
+<body>
 <h1 style=><a class="bigt-l" href="/admh">Influenza</a></h1>
-<h6 style="display: inline-block;"> <a class="anc smlt" href="/adms">search</a>
-<p  class="smlt-l" style="display: inline-block;">Hello {{users.query.filter_by(ID=current_user).first().Name}}  <a class="anc smlt" href="/admd/{{current_user}}">account</a></p>
+<nav>
+<a class="anc smlt" href="/admh">home</a>
+<a class="anc smlt" href="/adms">database</a>
+<a class="anc smlt" href="/admd">stats</a>
 <a class="anc smlt" href="/login">Logout</a>
-</h6></div>
+</nav>
 {% block main %}
     
 {% endblock main %}

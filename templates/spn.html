@@ -12,8 +12,10 @@
 </head>
 
 <body>
-
-<h1 style=><a class="bigt-l" href="/spnh/{{current_user}}">Influenza</a></h1>
+<div style="display: flex;justify-content: space-between;align-items: center;padding: 10px;width: 100%;box-sizing: border-box;">
+<a class="bigt-l" href="/spnh/{{current_user}}">Influenza</a>
+<p class="ib" style="margin:4px 0px">Hello {{users.query.filter_by(ID=current_user).first().Name}} , you're a sponser</p>
+</div>
 <nav class=".nav -link">
 <a class="anc smlt" href="/spnh/{{current_user}}">home</a>
 <a class="anc smlt" href="/spns/{{current_user}}">Search</a> 
@@ -21,7 +23,6 @@
 <a class="anc smlt" href="/login">Logout</a></h6>
 </nav>
 <br>
-<p class="ib">Hello {{users.query.filter_by(ID=current_user).first().Name}} , you're a sponser</p>
 
 {% block main %}
     

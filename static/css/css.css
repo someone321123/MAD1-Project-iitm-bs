@@ -43,7 +43,8 @@
     cursor:pointer; 
     background-color: #ffffff;
     color:#000000;
-    margin:4px 15px;
+    margin:4px auto;
+    display: block;
     height:auto;
 }
 .ibb{
@@ -62,11 +63,10 @@
 .anc{  font-family: lexend;
     font-size:25px;
     border-radius: 20px;
-
     background-color: #000000;
     color:#ffffff;
     text-decoration: none;
-    padding:2px 5px;
+    padding:2px 8px;
 }
 .ibb:hover{
     background-color:#000000;
@@ -95,9 +95,11 @@
     }
 .ltbu {
     height: auto;
-    width: 500px;
+    width: 300px;
     margin-top:150px;
-    float: left;
+    margin: 4px auto; /* Changed from 4px 15px to 4px auto */
+    height: auto;
+    display: block;
 }
 .bigt-l{
     color: #000000;

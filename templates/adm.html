@@ -11,7 +11,10 @@
   <link rel="stylesheet" href="{{ url_for('static',filename='css/css.css')}}">
 </head>
 <body>
+  <div style="display: flex;justify-content: space-between;align-items: center;padding: 10px;width: 100%;box-sizing: border-box;">
 <h1 style=><a class="bigt-l" href="/admh">Influenza</a></h1>
+<p class="ib" style="margin: 4px 0px">Hello {{users.query.filter_by(ID=current_user).first().Name}}</p>
+</div>
 <nav>
 <a class="anc smlt" href="/admh">home</a>
 <a class="anc smlt" href="/adms">database</a>

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import time
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']=  'sqlite:///data.db'
@@ -180,7 +181,7 @@ def login():
 
 @app.route('/admh')
 def admh():
-    return render_template('admh.html', users=users, req=req,ads=ads, current_user=adm)
+    return render_template('admh.html', users=users,camps=camps, req=req,ads=ads, current_user=adm)
 
 @app.route('/adms', methods=['GET','POST'])
 def adms():
@@ -190,6 +191,26 @@ def adms():
         results=users.query.filter_by(ID=value).first()
         return render_template('adms.html', users=users, req=req,ads=ads,camps=camps, spons=spons,influs=influs, current_user=adm, results=results)
     return render_template('adms.html', users=users,camps=camps, req=req,ads=ads, current_user=adm, results=results)
+
+@app.route('/flag/<string:type>/<int:id>/<int:flag>')
+def flag(id,type,flag):
+    if type=='u':
+        if flag==1:
+            users.query.filter_by(ID=id).update({'flag':1})
+        else:
+            users.query.filter_by(ID=id).update({'flag':0})
+            db.session.commit()
+            return redirect('/admh')
+    if type=='c':
+        if flag==1:
+            camps.query.filter_by(ID=id).update({'flag':1})
+        else:
+            camps.query.filter_by(ID=id).update({'flag':0})
+            db.session.commit()
+            return redirect('/admh')
+    db.session.commit()
+    return redirect('/adms')
+
 
 @app.route('/infh/<int:current_user>')
 def infh(current_user):
@@ -558,8 +579,9 @@ def update_req(request_id):
 
 #*****development settings*******
 #current_user=1
-adm=4
+adm=1
 #****remove this line when you are done with development*******
+
 
 if __name__ == '__main__':
     app.run(debug=True)

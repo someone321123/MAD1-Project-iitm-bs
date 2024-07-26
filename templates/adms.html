@@ -1,6 +1,6 @@
 {% extends 'adm.html' %} {% block main %}
 
-<form action="/adms" method="POST" style="display: inline-block;">
+<form action="/adms" method="POST"  class="ib" style="display: inline-block;">
     <input type="text" name="value" class="ib" placeholder="Search" value="{{results.ID}}" style="display: inline-block;">
 </form>
 <br><hr>
@@ -26,6 +26,7 @@
         <dd>{{spons.query.filter_by(ID=results.ID).first().bio}} </dd>
     </dl>
 </div>
+<a class="anc smlt" href="/flag/u/{{results.ID}}/1">flag account</a>
 <hr>
 {%if camps.query.filter_by(spn=results.ID).all()|length > 0%}
 <p class="bigt-l" style="font-size:27px;">user's Campaigns</p> <br> <hr><hr>
@@ -64,7 +65,7 @@
 </table> </div>
 {% endif %}
   <br> 
- <a class="anc smlt" href="#">flag Campaign</a> <br><br>
+ <a class="anc smlt" href="/flag/c/{{c.ID}}/1">flag Campaign</a> <br><br>
 <hr> <br> <br>
 {%endfor%}
 {% endif %}
@@ -132,7 +133,7 @@
         <dt>Bio</dt>    
         <dd>{{influs.query.filter_by(ID=results.ID).first().bio}}</dd>
     </dl>
-    <a class="anc smlt" href="#">flag account</a>
+    <a class="anc smlt" href="/flag/u/{{results.ID}}/1">flag account</a>
 </div>
 {% if (req.query.filter_by(target=results.ID).all()|length > 0 or req.query.filter_by(reqer=results.ID,).all()|length >0 )  %}
     <h4 class="ib">requests made or received by this user</h4>
@@ -177,7 +178,7 @@
 <h4   class="ib">this user has 0 ad requests!!!</h4>
 {%endif%}
 {%else%} 
-admin
+<p class="bigt-l" style="font-size:27px;">admin</p>
 {%endif%}
 
 

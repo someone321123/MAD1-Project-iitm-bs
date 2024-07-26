@@ -53,8 +53,8 @@
     <label for="budget">budget:</label><br>
     <input type="text" class="ib" id="budget" name="budget" value="{{ads.query.filter_by(ID=ad).first().budget}}"><br>
     <label for="reqs">requirements</label>
-    <textarea id="reqs" name="reqs" >{{ads.query.filter_by(ID=ad).first().reqs}}</textarea><br>
-    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
+    <textarea id="reqs" name="reqs" class="ib">{{ads.query.filter_by(ID=ad).first().reqs}}</textarea><br>
+    <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Make a request">
 </form> </div>
 
 {%endif%}

@@ -1,12 +1,11 @@
 {% extends 'spn.html' %}
 {% block main %}
-<form action="/spns/{{current_user}}" method ="POST" style="display: inline-block;">
+<form action="/spns/{{current_user}}" method ="POST" class="ib" style="display: inline-block;">
   <input type="text" name="value" class="ib" placeholder="Search" style="display: inline-block;">
 </form>
 <hr>
 
 {%if results%}
-<h4>influencers</h4>
 <table class="table">
 <thead>
   <tr>

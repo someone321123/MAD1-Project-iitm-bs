@@ -1,58 +1,38 @@
 {% extends 'adm.html' %}{% block main %}
-<h1>Admin Home</h1>
-
-<h4>Pending Requsets</h4>
+{%if users.query.filter_by(flag=1).all()|length > 0 or camps.query.filter_by(flag=1).all()|length > 0%}
+<h4 class="bigt-l" style="font-size:27px;">flaggged content</h4>
 <div class="container my-3">
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">Index</th>
-        <th scope="col">User ID</th>
-        <th scope="col">User Name</th>
-        <th scope="col">Book</th>
-        <th scope="col">Book ID</th>
+        <th scope="col">Type</th>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
+{%for u in users.query.filter_by(flag=1).all()%}
   <tr>
-    <td>Index</td>
-    <td>id</td>
-    <td>name</td>
-    <td>book id</td>
-    <td>book</td>
-    <td>
-      <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">GO</a></button>
-    </td>
+    <td>User</td>
+    <td>{{u.ID}}</td>
+    <td>{{u.Name}}</td>
+    <td><a class="anc smlt" href="/flag/u/{{u.ID}}/0">UNFLAG</a></td>
   </tr>
+{%endfor%}
+{%for c in camps.query.filter_by(flag=1).all()%}
+  <tr>
+    <td>Campaign</td>
+    <td>{{c.ID}}</td>
+    <td>{{c.goal}}</td>
+    <td><a class="anc smlt" href="/flag/c/{{c.ID}}/0">UNFLAG</a></td>
+  </tr>
+{%endfor%}
+</tbody>
 </table>              
 </div>
-<h4>Register History</h4>
-<div class="container my-3">
-  <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Index</th>
-          <th scope="col">Book</th>
-          <th scope="col">User</th>
-          <th scope="col">Grant Date</th>
-          <th scope="col">Return Date</th>
-          <th scope="col">Status</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-    <tr>
-      <td>index</td>
-      <td>book</td>
-      <td>user <a href="/13usr" type="button" >i</a></td>
-      <td>date d</td>
-      <td>date r</td>
-      <td>revoked</td>
-      <td>
-        <a href="#" type="button" class="btn btn-outline-dark btn-sm mx-1">GO</a></button>
-      </td>
-    </tr>
-  </table>              
-  </div>
+{%else%}
+<h4 class="bigt-l" style="font-size:27px;">no flagged content</h4>
+{%endif%}
+
 {% endblock main %}

@@ -17,7 +17,7 @@
     <input type="radio" id ='public' name="visibs" value='public' required> <label for="public">public</label><br>
     <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
     <label for="desc">Description</label>
-    <textarea id="desc" name="desc" >Describe your campaign</textarea><br>
+    <textarea id="desc" name="desc" class="ib" >Describe your campaign</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
 </form> 
 </div>
@@ -33,7 +33,7 @@
     <label for="budget">budget:</label><br>
     <input type="text" class="ib" id="budget" name="budget" value="budget"><br>
     <label for="reqs">requirements</label>
-    <textarea id="reqs" name="reqs" >Describe your requirements</textarea><br>
+    <textarea id="reqs" name="reqs"  class="ib" >Describe your requirements</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
 </form>     </div>
 
@@ -62,7 +62,7 @@
     <input type="radio" id ='public' name="visibs" value='public' required> <label for="public">public</label><br>
     <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
     <label for="desc">Description</label>
-    <textarea id="desc" name="desc" >{{camps.query.filter_by(ID=camp).first().desc}}</textarea><br>
+    <textarea id="desc" name="desc"  class="ib" >{{camps.query.filter_by(ID=camp).first().desc}}</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="update">
 </form> </div>
 {%elif new=='update_ad'%}
@@ -76,7 +76,7 @@
     <label for="budget">budget:</label><br>
     <input type="text" class="ib" id="budget" name="budget" value="{{ads.query.filter_by(ID=ad).first().budget}}"><br>
     <label for="reqs">requirements</label>
-    <textarea id="reqs" name="reqs" >{{ads.query.filter_by(ID=ad).first().reqs}}</textarea><br>
+    <textarea id="reqs" name="reqs" class="ib" >{{ads.query.filter_by(ID=ad).first().reqs}}</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="update">                            
 </form>
 </div>
@@ -91,7 +91,7 @@
     <label for="plats">platforms:</label><br>
     <input type="text" class="ib" id="plats" name="plats" value="{{influs.query.filter_by(ID=current_user).first().plats}}"><br>
     <label for="bio">bio:</label><br>
-    <textarea id="bio" name="bio" >{{influs.query.filter_by(ID=current_user).first().bio}}</textarea><br>
+    <textarea id="bio" name="bio"  class="ib" >{{influs.query.filter_by(ID=current_user).first().bio}}</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="update">
 </form>
 </div>

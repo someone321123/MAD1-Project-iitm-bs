@@ -20,9 +20,9 @@ camps,  ads-->
     </dl>
     <form action="/spnd/{{current_user}}" method="POST" class="ib">
         <label for="niche">niche</label>
-        <input type="text" name="niche" value="{{spons.query.filter_by(ID=current_user).first().niche}}">
+        <input type="text" name="niche" class="ib" value="{{spons.query.filter_by(ID=current_user).first().niche}}">
         <label for="bio">bio</label>
-        <input type="text" name="bio" value="{{spons.query.filter_by(ID=current_user).first().bio}}"> <br><br>
+        <input type="text" name="bio" class="ib" value="{{spons.query.filter_by(ID=current_user).first().bio}}"> <br><br>
         <input type="submit" class="btn btn-outline-dark btn-sm mx-1" value="update">
     </form>
     <hr><hr>    <a class="anc smlt" href="/delete/{{current_user}}">delete account</a> <br><br>
@@ -40,7 +40,7 @@ camps,  ads-->
     <dd>{{c.goal}}</dd>
     <dt>Description</dt>
     <dd>{{c.desc}}</dd>
-</dl> </div>
+</dl> {%if c.flag==1%}<p style="color:red">Flagged</p>{%endif%}</div>
 {%if ads.query.filter_by(camps=c.ID).all()|length > 0%}
 <p class="bigt-l" style="font-size:20px;">Ads for {{c.goal}}</p>
 <div class="container my-3">

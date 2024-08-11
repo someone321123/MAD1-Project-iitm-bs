@@ -91,7 +91,7 @@ class ads(db.Model):
 class req(db.Model):
     __tablename__ = 'req'
     ID = db.Column(db.Integer, primary_key=True)
-    ad = db.Column(db.Integer, db.ForeignKey('ads.ID'))
+    ad = db.Column(db.Integer, db.ForeignKey('ads.ID'), nullable=False)
     target = db.Column(db.Integer, db.ForeignKey('users.ID'))
     reqer = db.Column(db.Integer, db.ForeignKey('users.ID'))
     status = db.Column(db.String(50), default="PENDING")
@@ -212,7 +212,7 @@ def flag(id,type,flag):
     return redirect('/adms')
 
 
-@app.route('/infh/<int:current_user>')
+@app.route('/infh/<int:current_user>', methods=['GET', 'POST'])
 def infh(current_user):
     try:
         if users.query.filter_by(ID=current_user).first().Role=='inf':
@@ -451,20 +451,23 @@ def new_neg():
                 reqs=reqs,
                 dura=dura,
                 budget=budget,
-                ad=ad,
-                Name=ads.query.filter_by(ID=ad).first().Name
+                ad=req.query.filter_by(ID=ad).first().ad,
+                Name=ads.query.filter_by(ID=req.query.filter_by(ID=ad).first().ad).first().Name
                 )
             new_req=req(
-                target=spons.query.filter_by(ID=camps.query.filter_by(ID=ads.query.filter_by(ID=ad).first().camps).first().spn).first().ID,
+                target=spons.query.filter_by(ID=camps.query.filter_by(ID=ads.query.filter_by(ID=req.query.filter_by(ID=ad).first().ad).first().camps).first().spn).first().ID,
                 reqer=current_user,
-                ad=ad,
+                ad=req.query.filter_by(ID=ad).first().ad,
                 status='NEGOTIATION',
                 D_iss=datetime.utcnow()
                 )
             db.session.add(new_req)
             db.session.add(new_neg)
+
+            ####
+            req.query.filter_by(ID=ad).delete()
             db.session.commit()
-            return redirect(f'/infs/{current_user}')
+            return redirect(f'/infh/{current_user}')
         except Exception as e:
             return render_template('error.html', message=str(e))
     return render_template('error.html', message="Method not allowed")
@@ -532,7 +535,7 @@ def update_ad(ad):
         except Exception as e:
             return render_template('error.html', message=str(e))  # Handle other exceptions
     return render_template('new.html',users=users,req=req,ads=ads,current_user=current_user, new='update_ad',ad=ad)
-
+#may have errors
 @app.route('/update_req/<int:request_id>', methods=['GET','POST'])
 def update_req(request_id):
     if request.method=='POST':
@@ -550,7 +553,31 @@ def update_req(request_id):
                 if users.query.filter_by(ID=current_user).first().Role=='inf':
                     return redirect(f'/infh/{current_user}')
                 elif users.query.filter_by(ID=current_user).first().Role=='spn':
-                    return redirect(f'/spnh/{current_user}')    
+                    return redirect(f'/spnh/{current_user}')   
+            elif request.form['action']=='REJECT NEGOTIATION':
+                if req.query.filter_by(ID=request_id).first().status=='NEGOTIATION':
+                    neg.query.filter_by(ad=req.query.filter_by(ID=request_id).first().ad).delete()
+                    db.session.commit()
+                    req.query.filter_by(ID=request_id).delete()
+                db.session.commit()
+                if users.query.filter_by(ID=current_user).first().Role=='inf':
+                    return redirect(f'/infh/{current_user}')
+                elif users.query.filter_by(ID=current_user).first().Role=='spn':
+                    return redirect(f'/spnh/{current_user}') 
+            elif request.form['action']=='ACCEPT NEGOTIATION':
+                if req.query.filter_by(ID=request_id).first().status=='NEGOTIATION':
+                    ads.query.filter_by(ID=req.query.filter_by(ID=request_id).first().ad).update({
+                        'reqs':neg.query.filter_by(ad=req.query.filter_by(ID=request_id).first().ad).first().reqs,
+                        'dura':neg.query.filter_by(ad=req.query.filter_by(ID=request_id).first().ad).first().dura,
+                        'budget':neg.query.filter_by(ad=req.query.filter_by(ID=request_id).first().ad).first().budget,
+                        })
+            
+                    neg.query.filter_by(ad=req.query.filter_by(ID=request_id).first().ad).delete()
+                    req.query.filter_by(ID=request_id).update({'status':'ACCEPTED'})
+                    db.session.commit()
+                    if users.query.filter_by(ID=current_user).first().Role=='spn':
+                        return redirect(f'/spnh/{current_user}')
+                    
             elif request.form['action']=='Make Request':
                 reqe = req(
                     target=spons.query.filter_by(ID=camps.query.filter_by(ID=ads.query.filter_by(ID=request_id).first().camps).first().spn).first().ID,
@@ -567,10 +594,15 @@ def update_req(request_id):
                     return redirect(f'/spns/{current_user}')
                 else:
                     return render_template('error.html', message="User doesnt exist")
+                
             elif request.form['action']=='Make Negotiation':
+                
                 ad = request_id
                 return render_template('view.html', view='neg', ad=ad, ads=ads, users=users, req=req, camps=camps, spons=spons, influs=influs)
-            
+            elif request.form['action']=='VIEW NEGOTIATION':
+                ad = request_id
+                return render_template('view.html', view='view_neg', ad=ad, ads=ads,neg=neg,current_user=current_user, users=users, req=req, camps=camps, spons=spons, influs=influs)   
+
             else:
                 return render_template('error.html', message="Under Maintainance")
         except Exception as e:

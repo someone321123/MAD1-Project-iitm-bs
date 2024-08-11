@@ -28,6 +28,9 @@
           <input type="hidden" name="request_id" value="{{ req.ID }}">
           <input type="submit" class="anc smlt" name="action" value="ACCEPT">
           <input type="submit" class="anc smlt" name="action" value="REJECT">
+          <input type="submit" class="anc smlt" name="action" value="Make Negotiation">
+  
+
         </form>
       </td>
     </tr>
@@ -118,8 +121,41 @@
 {%else %}
 <h4   class="ib">you have 0 active ads!!!</h4>
 {%endif%}
-
-<hr>  
  
+ {%if req.query.filter_by(reqer=current_user,status='NEGOTIATION').all()|length > 0  %}
+    <h4 class="ib">Negotiations from you</h4>  
+<div class="container my-3">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Requestor</th>
+      <th scope="col">Ad name</th>
+      
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+                    
+  <tbody> 
+
+{% for req in req.query.filter_by(reqer=current_user,status='NEGOTIATION').all() %}
+    <tr>
+      <td>{{users.query.filter_by(ID=req.reqer).first().Name}}</td>
+      <td>{{ads.query.filter_by(ID=req.ad).first().Name}}</td>
+      
+      <td>
+        <form action="/update_req/{{req.ID}}" method="POST" class="ib">
+          <input type="hidden" name="request_id" value="{{ req.ID }}">
+          <input type="submit" class="anc smlt" name="action" value="REJECT NEGOTIATION">
+        </form>
+      </td>
+    </tr>
+
+{% endfor %}
+  </tbody>
+</table>
+</div>
+{%else %}
+<h4     class="ib">you have 0 negotiations!</h4>
+{% endif %}
 
 {% endblock main %}

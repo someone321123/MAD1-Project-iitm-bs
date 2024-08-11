@@ -24,7 +24,7 @@
 
   <tr>
     <td>{{r.ID}}</td>
-    <td>{{r.Name}}</td>
+    <td>{{r.Name}} {%if users.query.filter_by(ID=r.ID).first().flag==1%}<p style="color:red">Flagged</p>{%endif%}</td>
     <td>{{r.plats}}</td>
     <td>{{r.niche}}</td>
     <td>{{r.folls}}         </td>
@@ -38,6 +38,7 @@
 {% endfor %}
 </tbody>
 </table>
+
 {%else%}
 <h4 class="ib">no influencers found</h4>
 {%endif%}

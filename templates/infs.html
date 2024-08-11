@@ -23,13 +23,12 @@
 
     <tr>
       <td>{{r.Name}}</td>
-      <td>{{spons.query.filter_by(ID=camps.query.filter_by(ID=r.camps).first().spn).first().Name}}</td>
-      <td>{{camps.query.filter_by(ID=r.camps).first().goal}}</td>
+      <td>{{spons.query.filter_by(ID=camps.query.filter_by(ID=r.camps).first().spn).first().Name}} {%if users.query.filter_by(ID=spons.query.filter_by(ID=camps.query.filter_by(ID=r.camps).first().spn).first().ID).first().flag==1%}<p style="color:red">Flagged</p>{%endif%}</td>
+      <td>{{camps.query.filter_by(ID=r.camps).first().goal}} {%if camps.query.filter_by(ID=r.camps).first().flag==1%}<p style="color:red">Flagged</p>{%endif%}</td>
       <td>
         <form action="/update_req/{{r.ID}}" method="POST" class="ib">
           <input type="hidden" name="request_id" value="{{r.ID}}">
           <input type="submit" class="anc smlt" name="action" value="Make Request">
-          <input type="submit" class="anc smlt" name="action" value="Make Negotiation">
         </form>
       </td>
     </tr>

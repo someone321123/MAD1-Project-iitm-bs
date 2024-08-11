@@ -45,17 +45,37 @@
 <h6 class="ib">Make a negotiation</h6>
 
 <div class="ib">
+
 <form action="/new_neg" method="POST">
     <input type="hidden" name="ad" value="{{ad}}">
-    <label >Name: {{ads.query.filter_by(ID=ad).first().Name}}</label><br>
+    <label >Name: {{ads.query.filter_by(ID=req.query.filter_by(ID=ad).first().ad).first().Name}}</label><br>
     <label for="duration">duration :</label><br>
-    <input type="text" class="ib" id="dura" name="dura" value="{{ads.query.filter_by(ID=ad).first().dura}}"><br>
+    <input type="text" class="ib" id="dura" name="dura" value="{{ads.query.filter_by(ID=req.query.filter_by(ID=ad).first().ad).first().dura}}"><br>
     <label for="budget">budget:</label><br>
-    <input type="text" class="ib" id="budget" name="budget" value="{{ads.query.filter_by(ID=ad).first().budget}}"><br>
+    <input type="text" class="ib" id="budget" name="budget" value="{{ads.query.filter_by(ID=req.query.filter_by(ID=ad).first().ad).first().budget}}"><br>
     <label for="reqs">requirements</label>
-    <textarea id="reqs" name="reqs" class="ib">{{ads.query.filter_by(ID=ad).first().reqs}}</textarea><br>
+    <textarea id="reqs" name="reqs" class="ib">{{ads.query.filter_by(ID=req.query.filter_by(ID=ad).first().ad).first().reqs}}</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Make a request">
 </form> </div>
+{%elif view=='view_neg'%}
+<h6 class="ib">View Negotiation</h6>
+
+<div class="ib">
+    <dl>
+        <dt>Name</dt>
+        <dd>{{neg.query.filter_by(ad=req.query.filter_by(ID=ad).first().ad).first().Name}}</dd>
+        <dt>Duration</dt>    
+        <dd>{{neg.query.filter_by(ad=req.query.filter_by(ID=ad).first().ad).first().dura}}</dd>
+        <dt>Budget</dt>
+        <dd>{{neg.query.filter_by(ad=req.query.filter_by(ID=ad).first().ad).first().budget}}</dd>
+        <dt>Requirements</dt>
+        <dd>{{neg.query.filter_by(ad=req.query.filter_by(ID=ad).first().ad).first().reqs}}</dd>
+    </dl>
+</div>
+
+<a class="anc smlt" href="/spnh/{{current_user}}">go back</a><br><br>
+    
+
 
 {%endif%}
 

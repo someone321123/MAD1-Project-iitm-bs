@@ -1,0 +1,18 @@
+{% extends 'adm.html' %} {% block main %}
+<p class='bigt-l' style= 'font-size:20px'>stats</p>
+<div class="ib">
+<dl>
+    <dt>Total users</dt>
+    <dd>{{users.query.count()}}</dd>
+    <dt>Total campaigns</dt>
+    <dd>{{camps.query.count()}}</dd>
+    <dt>Total ads</dt>
+    <dd>{{ads.query.count()}}</dd>
+    <dt>influencer vs sponsor ratio</dt>
+    <dd>{{influs.query.count()}}/{{spons.query.count()}}</dd>
+    <dt>Accepted vs pending requests</dt>
+    <dd>{{req.query.filter_by(status='ACCEPTED').count()}}/{{req.query.filter_by(status='PENDING').count()}}</dd>
+</dl>
+</div>
+
+{% endblock  main%}

@@ -18,8 +18,8 @@ background-color:  #000000;">
     <p class="smlt">Not a user? Please <a href="/" class="anc smlt" style="color: blue;background-color: white;">Register Here</a> </p>
  
     <form action="/login" method="POST">
-        <input class="ib" name="name" placeholder="Your Username"><br>
-        <input type="password" name="password" class="ib" placeholder="Enter Password"><br>
+        <input class="ib" name="name" placeholder="Your Username" required minlength="4" maxlength="20"><br>
+        <input type="password" name="password" class="ib" placeholder="Enter Password" required minlength="4" maxlength="20"><br>
         <input type="submit" class="ibb" value="Submit"><br>
     </form><br>
 </div>

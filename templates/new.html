@@ -7,17 +7,18 @@
 <h6 class="ib">Make a new campaign</h6>
 <div class="ib">
 <form action="/new_camp/{{current_user}}" method="POST">
-    <label for="goal">goal:</label><br>
+    <label for="goal">goal: (must be unique)</label><br>
     <input type="text" id="goal" name="goal" value="goal" required class="ib"><br>
     <label for="deadline">deadline:</label><br>
-    <input type="datetime-local" class="ib" id="deadline" name="deadline" value="deadline"><br>
+    <input type="datetime-local" class="ib" id="deadline" required min="2024-01-01T00:00"
+    max="2025-12-31T23:59" name="deadline" value="deadline"><br>
     <label for="budget">budget:</label><br>
-    <input type="text" class="ib" id="budget" name="budget" value="budget"><br>
+    <input type="text" class="ib" id="budget" name="budget" required value="budget"><br>
     <label for="">Visibility of Campaign</label> <br>
     <input type="radio" id ='public' name="visibs" value='public' required> <label for="public">public</label><br>
     <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
     <label for="desc">Description</label>
-    <textarea id="desc" name="desc" class="ib" >Describe your campaign</textarea><br>
+    <textarea id="desc" name="desc" class="ib"  required >Describe your campaign</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
 </form> 
 </div>
@@ -26,14 +27,14 @@
 
 <div class="ib">
 <form action="/new_ad/{{camp}}" method="POST">
-    <label for="Name">Name:</label><br>
-    <input type="text" id="Name" name="Name" value="Name" required class="ib"><br>
+    <label for="Name">Name: (muste be unique)</label><br>
+    <input type="text" id="Name" name="Name" value="Name" required min="4" max="40" class="ib"><br>
     <label for="duration">duration :</label><br>
-    <input type="text" class="ib" id="dura" name="dura" value="duration"><br>
+    <input type="text" class="ib" id="dura" name="dura" required value="duration"><br>
     <label for="budget">budget:</label><br>
-    <input type="text" class="ib" id="budget" name="budget" value="budget"><br>
+    <input type="text" class="ib" id="budget" name="budget" required value="budget"><br>
     <label for="reqs">requirements</label>
-    <textarea id="reqs" name="reqs"  class="ib" >Describe your requirements</textarea><br>
+    <textarea id="reqs" name="reqs"  class="ib"  required >Describe your requirements</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="Create">
 </form>     </div>
 
@@ -52,17 +53,18 @@
 <h6 class="ib">Update Campaign</h6>
 <div class="ib">
 <form action="/update_camp/{{camp}}" method="POST">
-    <label for="goal">goal:</label><br>
-    <input type="text" id="goal" name="goal" value="{{camps.query.filter_by(ID=camp).first().goal}}" required class="ib"><br>
+    <label for="goal">goal:{{camps.query.filter_by(ID=camp).first().goal}}</label><br>
+    <input type="text" id="goal" name="goal" value="{{camps.query.filter_by(ID=camp).first().goal}}" hidden class="ib"><br>
     <label for="deadline">deadline:</label><br>
-    <input type="datetime-local" class="ib" id="deadline" name="deadline" value="{{camps.query.filter_by(ID=camp).first().D_end}}"><br>
+    <input type="datetime-local" class="ib" id="deadline" name="deadline" value="{{camps.query.filter_by(ID=camp).first().D_end}}" required min="2024-01-01T00:00"
+    max="2025-12-31T23:59"><br>
     <label for="budget">budget:</label><br>
-    <input type="text" class="ib" id="budget" name="budget" value="{{camps.query.filter_by(ID=camp).first().budget}}"><br>
+    <input type="text" class="ib" id="budget" name="budget" required value="{{camps.query.filter_by(ID=camp).first().budget}}"><br>
     <label for="">Visibility of Campaign</label> <br>
     <input type="radio" id ='public' name="visibs" value='public' required> <label for="public">public</label><br>
     <input type="radio" id="private" name="visibs" value="private" required> <label for="private">private</label><br>
     <label for="desc">Description</label>
-    <textarea id="desc" name="desc"  class="ib" >{{camps.query.filter_by(ID=camp).first().desc}}</textarea><br>
+    <textarea id="desc" name="desc"  class="ib"  required >{{camps.query.filter_by(ID=camp).first().desc}}</textarea><br>
     <input type="submit"  class="btn btn-outline-dark btn-sm mx-1" value="update">
 </form> </div>
 {%elif new=='update_ad'%}

@@ -211,6 +211,10 @@ def flag(id,type,flag):
     db.session.commit()
     return redirect('/adms')
 
+@app.route('/admd', methods=['GET', 'POST'])
+def admd():
+    return render_template('admd.html', users=users, req=req,ads=ads, current_user=adm, camps=camps, spons=spons, influs=influs, neg=neg)
+
 
 @app.route('/infh/<int:current_user>', methods=['GET', 'POST'])
 def infh(current_user):
@@ -336,6 +340,7 @@ def delete(current_user):
         db.session.delete(camp)
     if users.query.filter_by(ID=current_user).first().Role=='inf':
         influs.query.filter_by(ID=current_user).delete()
+        req.query.filter_by(reqer=current_user).delete()
     elif users.query.filter_by(ID=current_user).first().Role=='spn':
         spons.query.filter_by(ID=current_user).delete()
     else:

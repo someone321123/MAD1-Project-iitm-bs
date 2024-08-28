@@ -17,6 +17,8 @@ camps,  ads-->
         <dd>{{users.query.filter_by(ID=current_user).first().D_join}}</dd>
         <dt>Type of user</dt>
         <dd>{{users.query.filter_by(ID=current_user).first().Role}}</dd>
+        <dt>phone</dt>
+        <dd>{{users.query.filter_by(ID=current_user).first().ph_no}}</dd>
     </dl>
     <form action="/spnd/{{current_user}}" method="POST" class="ib">
         <label for="niche">niche</label>

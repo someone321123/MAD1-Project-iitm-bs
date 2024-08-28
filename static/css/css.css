@@ -95,10 +95,9 @@
     }
 .ltbu {
     height: auto;
-    width: 300px;
+    width: auto;
     margin-top:150px;
     margin: 4px auto; /* Changed from 4px 15px to 4px auto */
-    height: auto;
     display: block;
 }
 .bigt-l{

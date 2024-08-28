@@ -20,6 +20,7 @@ class users(db.Model):
     D_join = db.Column(db.DateTime, default=datetime.utcnow)
     Role = db.Column(db.String(200), default="inf")
     flag=db.Column(db.Integer, default=0)
+    ph_no = db.Column(db.String(20),default="none")
     
     # Relationships
     influ = db.relationship('influs', backref='user', uselist=False)
@@ -126,9 +127,10 @@ def register():
         name = request.form['name']
         password = request.form['password']
         role = request.form.get('role')
+        ph = request.form.get('phone')
 
         if users.query.filter_by(Name=name).first() is None:
-            user=users(Name=name,Password=password, Role=role)
+            user=users(Name=name,Password=password, Role=role, ph_no=ph)
             db.session.add(user)
             db.session.commit()
             if role=='inf':
@@ -292,7 +294,7 @@ def spns(current_user):
             return render_template('view.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results, influ=inf,view='influ')
         value = request.form['value']        
         # Query for influs
-   #     results_inf = influs.query.filter(influs.Name.ilike(f'%{value}%')).all()       
+        results_inf = influs.query.filter(influs.Name.ilike(f'%{value}%')).all()       
         # Query for plat
         results_plts = influs.query.filter(influs.plats.ilike(f'%{value}%')).all()       
         # Query for Niche
@@ -300,7 +302,7 @@ def spns(current_user):
     #    results_folls = influs.query.filter(influs.folls.ilike(f'%{value}%')).all()
         results_id=influs.query.filter(influs.ID.ilike(f'%{value}%')).all()
         # Combine results (removing duplicates)
-        results = list(set( results_plts +results_niche  + results_id))
+        results = list(set( results_plts +results_niche  + results_id+results_inf))
         return render_template('spns.html',current_user=current_user, users=users, camps=camps, spons=spons,ads=ads, results=results)
     try:
         if users.query.filter_by(ID=current_user).first().Role=='spn':
